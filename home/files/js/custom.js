@@ -1,6 +1,7 @@
-/********************************
-Custom scripts for Yochan Homepage
-********************************/
+/*
+ * Custom scripts for Demo page
+ * --------------------------------------------------
+ */
 
 // slow-scroll on active anchor tags
 
