@@ -1,3 +1,7 @@
+/*****************************************
+Custom styles for Yochan Robots page
+******************************************/
+
 html, body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
