@@ -1,0 +1,143 @@
+/*****************************************
+Custom styles for Yochan Robots page
+******************************************/
+
+html, body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
+body {
+  padding-top: 56px;
+  background-image: url('../images/background.png');
+}
+
+a {
+  color: #a21f4b;
+}
+
+@media (max-width: 767.98px) {
+  .offcanvas-collapse {
+    position: fixed;
+    top: 56px; /* Height of navbar */
+    bottom: 0;
+    width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    overflow-y: auto;
+    background-color: var(--gray-dark);
+    transition: -webkit-transform .3s ease-in-out;
+    transition: transform .3s ease-in-out;
+    transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  .offcanvas-collapse.open {
+    -webkit-transform: translateX(-1rem);
+    transform: translateX(-1rem); /* Account for horizontal padding on navbar */
+  }
+}
+
+.nav-scroller {
+  position: relative;
+  z-index: 2;
+  height: 2.75rem;
+  overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  margin-top: -1px;
+  overflow-x: auto;
+  color: rgba(255, 255, 255, .75);
+  text-align: center;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.text-white-50 { color: rgba(255, 255, 255, .5); }
+
+.bg-maroon { background-color: #a21f4b; }
+
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.lh-100 { line-height: 1; }
+.lh-125 { line-height: 1.25; }
+.lh-150 { line-height: 1.5; }
+
+.paper-link {
+  margin-left: 10px;
+}
+
+.media > img {
+  width: 100px;
+  margin-right: 10px;
+  cursor: pointer;
+  -webkit-filter: grayscale(25%);
+  filter: grayscale(25%);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+} 
+
+.media > img:hover {
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.demo-link * {
+  cursor: pointer;
+}
+
+.demo-link:hover + * {
+  color: #a21f4b;
+}
+
+.demo-link > div:hover {
+  color: #a21f4b;
+}
+
+.nav-link {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: .875rem;
+}
+
+.nav-link.bold {
+  font-weight: 500;
+  color: var(--gray-dark);
+  color: #a21f4b;
+}
+
+.nav-link.bold:hover {
+  background-color: #ffccdd;
+}
+
+.nav-link-no-link {
+  color: gray!important;
+}
+
+.nav-link-no-link > span {
+  color: gray!important;
+}
+
+.nav-link-yellow {
+  text-decoration: none;
+}
+
+.nav-link-yellow:hover {
+  color: #fdb827;
+  text-decoration: none;
+}
+
+a[disabled], a[disabled]:hover {
+  color: #bb8d9d;
+  cursor: not-allowed;
+}
