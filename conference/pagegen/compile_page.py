@@ -61,7 +61,6 @@ def cache(filename = 'data/faim-18.xlsx'):
 
 				new_entry = {}
 				for ent in entry:
-					print keys[entry.index(ent)]
 					new_entry[keys[entry.index(ent)]] = ent
 
 				dict_entry[idx] = new_entry
@@ -90,7 +89,6 @@ def write_file():
 			blob  = blob.replace('[ID]','collapse-{}-{}'.format(key, header.replace(' ','-')))
 			blob  = blob.replace('[parent-ID]','accordion-{}-{}'.format(key,header.replace(' ','-')))
 
-			print paper.keys()
 			for paper_key in paper.keys():
 				blob = blob.replace('[{}]'.format(paper_key), paper[paper_key])
 
@@ -127,9 +125,9 @@ def write_file():
 	index_template = index_template.replace('[DATE]', str(datetime.datetime.now()).split(' ')[0].strip())
 
 	# write to output
-	print 'Writing to file (../temp.html) ...'
+	print 'Writing to file (../index.html) ...'
 
-	with open('../faim-18.html', 'w') as output_file:
+	with open('../index.html', 'w') as output_file:
 		output_file.write(index_template)
 
 	print 'Done.'

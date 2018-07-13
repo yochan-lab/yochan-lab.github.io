@@ -33,6 +33,7 @@ $(document).ready(function () {
         }
 
         $('html,body').animate({scrollTop: $(this).offset().top - offset - 60}, 'slow');
+        $(this).css('color', 'red!important');
 
     });
 
