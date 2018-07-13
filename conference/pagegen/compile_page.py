@@ -89,6 +89,7 @@ def write_file():
 			blob  = blob.replace('[ID]','collapse-{}-{}'.format(key, header.replace(' ','-')))
 			blob  = blob.replace('[parent-ID]','accordion-{}-{}'.format(key,header.replace(' ','-')))
 
+			blob = blob.replace('[Paper]', 'href="[Paper]" target="_blank"')
 			for paper_key in paper.keys():
 				blob = blob.replace('[{}]'.format(paper_key), paper[paper_key])
 
@@ -105,6 +106,8 @@ def write_file():
 
 	temp_content = ''
 
+
+	num = 1
 	for key in data.keys():
 
 		print 'Writing section {} ...'.format(key)
@@ -113,10 +116,12 @@ def write_file():
 
 		new_section   = section_blob
 		new_section   = new_section.replace('[Name]', key).replace('[ID]', key.replace(' ','-'))
-		new_section   = new_section.replace('[CONTENT-ID]', key)
+		new_section   = new_section.replace('[CONTENT-ID]', '{}-{}'.format(num,key.replace(' ','-')))
 		new_section   = new_section.replace('[CONTENT]', section)
 
 		temp_content += new_section 
+
+		num += 1
 
 	with open('index_template.html', 'r') as index_template_file:
 		index_template = index_template_file.read()
