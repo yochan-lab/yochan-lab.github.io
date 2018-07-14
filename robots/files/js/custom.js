@@ -35,8 +35,8 @@ $(document).ready(function () {
             offset = 0;
         }
 
-
         $('html,body').animate({scrollTop: $(this).offset().top - offset - 60}, 'slow');
+
     });
 
 });

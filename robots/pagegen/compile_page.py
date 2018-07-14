@@ -18,6 +18,9 @@ import openpyxl as xl
 import argparse, sys, random
 import datetime
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 '''
 global variables 
 '''
@@ -69,6 +72,7 @@ def cache(filename = 'data.xlsx'):
 
 		data[str(sheet_name)] = dict_entry
 
+
 '''
 method :: write index.html
 '''
@@ -99,6 +103,7 @@ def write_file():
 			new_entry += blob
 
 		return new_entry
+
 
 	# cache data
 	print 'Reading data...'

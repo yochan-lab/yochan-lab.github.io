@@ -92,15 +92,15 @@ a {
   transform: scale(1.1);
 }
 
-.demo-link * {
+.entry-link * {
   cursor: pointer;
 }
 
-.demo-link:hover + * {
+.entry-link:hover + * {
   color: #a21f4b;
 }
 
-.demo-link > div:hover {
+.entry-link > div:hover {
   color: #a21f4b;
 }
 

@@ -16,7 +16,13 @@ $(document).ready(function () {
     });
 
     // method :: re-focus
-    $('.demo-link').click( function(){
+    $('.entry-link').click( function(){
+
+        $('.entry-link').each(function( index ) {
+            $( this ).css('color', 'black');;
+        });
+
+        $(this).css('color', '#a21f4b');
 
         var tempID = '#'+$(this).parent().parent().attr('id');
 
@@ -33,7 +39,6 @@ $(document).ready(function () {
         }
 
         $('html,body').animate({scrollTop: $(this).offset().top - offset - 60}, 'slow');
-        $(this).css('color', 'red!important');
 
     });
 
