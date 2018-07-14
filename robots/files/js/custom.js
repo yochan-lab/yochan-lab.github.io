@@ -21,6 +21,12 @@ $(document).ready(function () {
         var iframe = '<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/[LINK]?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'.replace('[LINK]',$(this).attr('link'));
         $($(this).attr('href')).find('.embed-responsive').html(iframe).css('background', 'none');
 
+        $('.demo-link').each(function( index ) {
+            $( this ).css('color', 'black');;
+        });
+
+        $(this).css('color', '#a21f4b');
+
         var tempID = '#'+$(this).parent().parent().attr('id');
 
         if($('.collapse.show', tempID).attr('id')) {

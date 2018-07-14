@@ -90,7 +90,7 @@ def write_file():
 			paper = data[header][length][key]
 
 			blob  = blob.replace('[ID]','collapse-{}-{}-{}'.format(key,header,length))
-			blob  = blob.replace('[parent-ID]','accordion-{}-{}'.format(key,header,length))
+			blob  = blob.replace('[parent-ID]','accordion-{}-{}'.format(header,length))
 
 			if paper['Paper'] == 'None':
 				blob = blob.replace('[Paper]', 'disabled')
