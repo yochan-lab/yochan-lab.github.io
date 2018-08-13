@@ -1,0 +1,66 @@
+/*****************************************
+Custom styles for yochan comics page
+******************************************/
+
+:root {
+  --jumbotron-padding-y: 3rem;
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: calc(var(--jumbotron-padding-y) * 2);
+    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+  }
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+.text-maroon {
+  color: #a21f4b!important;
+}
+
+.col-md-4 .card-body {
+  background-color: #f3f3f3;
+}
+
+.cover {
+/*  background-image: url('../images/cover.png');
+  background-size: auto 100%;
+  background-repeat: no-repeat; */
+}
+
+img.card-img-top {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+img.card-img-top:hover {
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+}
+
+.placeholder {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
