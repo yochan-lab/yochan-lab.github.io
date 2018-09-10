@@ -18,5 +18,19 @@ return false;
 }
 }
 });
+
+
+$("#sarath-img").hover(function(){
+    $(this).attr("src", "files/images/sarath2.jpg");
+}, function() {
+    $(this).attr("src", "files/images/sarath1.jpg");
+});
+
+$("#sachin-img").hover(function(){
+    $(this).attr("src", "files/images/sachin2.gif");
+}, function() {
+    $(this).attr("src", "files/images/sachin1.jpg");
+});
+
 });
 
