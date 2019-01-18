@@ -23,6 +23,7 @@ global variables
 '''
 
 data = {} 
+_filename = 'data/aaai-19.xlsx'
 
 '''
 html blobs 
@@ -96,7 +97,7 @@ def write_file():
 
     # cache data
     print( 'Reading data...' )
-    cache()
+    cache( _filename )
 
     # write problem file
     print( 'Compiling index.html ...' )
