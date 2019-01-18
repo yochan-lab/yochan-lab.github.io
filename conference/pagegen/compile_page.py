@@ -24,6 +24,7 @@ global variables
 
 data = {} 
 _filename = 'data/aaai-19.xlsx'
+_header   = 'AAAI 2019'
 
 '''
 html blobs 
@@ -119,6 +120,8 @@ def write_file():
 
     with open('index_template.html', 'r') as index_template_file:
         index_template = index_template_file.read()
+
+    index_template = index_template.replace('[HEADER]', _header)
 
     index_template = index_template.replace('[CONTENT]', temp_content)
     index_template = index_template.replace('[DATE]', str(datetime.datetime.now()).split(' ')[0].strip())
