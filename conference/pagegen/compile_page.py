@@ -36,6 +36,8 @@ with open('section_blob.html', 'r') as section_blob_file:
 with open('entry_blob.html', 'r') as entry_blob_file:
     entry_blob = entry_blob_file.read()
 
+with open('news_blob.html', 'r') as news_blob_file:
+    news_blob = news_blob_file.read()
 
 '''
 method :: cache data from xlxs file
@@ -90,8 +92,21 @@ def write_file():
 
             blob = blob.replace('[Paper]', 'href="[Paper]" target="_blank"')
             for paper_key in paper.keys():
-                blob = blob.replace('[{}]'.format(paper_key), paper[paper_key])
+                if paper_key != "News":
+                    blob = blob.replace('[{}]'.format(paper_key), paper[paper_key])
 
+            temp = ""
+            if paper["News"].strip() != "None":
+   
+                news_data = paper["News"].split('[DELIM]')
+
+                for news in news_data:
+                    news_header = news.split('[HEADER]')[0].strip()
+                    news_link = news.split('[HEADER]')[1].strip()
+
+                    temp += news_blob.replace('[Link]', news_link).replace('[Header]', news_header)
+
+            blob = blob.replace('[News]', temp)                
             new_entry += blob
 
         return new_entry
@@ -100,7 +115,7 @@ def write_file():
     print( 'Reading data...' )
     cache( _filename )
 
-    # write problem file
+    # write problem filea
     print( 'Compiling index.html ...' )
 
     temp_content = ''
