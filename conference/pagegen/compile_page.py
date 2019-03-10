@@ -23,8 +23,8 @@ global variables
 '''
 
 data = {} 
-_filename = 'data/aaai-19.xlsx'
-_header   = 'AAAI 2019'
+_filename = 'data/hri-19.xlsx'
+_header   = 'HRI 2019'
 
 '''
 html blobs 
@@ -42,7 +42,7 @@ with open('news_blob.html', 'r') as news_blob_file:
 '''
 method :: cache data from xlxs file
 '''
-def cache(filename = 'data/faim-18.xlsx'):
+def cache(filename = 'data/aaai-19.xlsx'):
 
     global data
 
