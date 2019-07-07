@@ -2,7 +2,7 @@
 
 '''
 ------
-Auto-compile video page for Yochan
+Auto-compile conference page for Yochan
 ------
 Author :: Tathagata Chakraborti
 Date   :: 07/12/2018
@@ -15,7 +15,7 @@ packages
 '''
 
 import openpyxl as xl
-import argparse, sys, random
+import argparse, sys, os
 import datetime
 
 '''
@@ -23,8 +23,7 @@ global variables
 '''
 
 data = {} 
-_filename = 'data/hri-19.xlsx'
-_header   = 'HRI 2019'
+conference_header = None
 
 '''
 html blobs 
@@ -42,9 +41,9 @@ with open('news_blob.html', 'r') as news_blob_file:
 '''
 method :: cache data from xlxs file
 '''
-def cache(filename = 'data/aaai-19.xlsx'):
+def cache(filename):
 
-    global data
+    global data, conference_header
 
     wb = xl.load_workbook(filename)
 
@@ -64,17 +63,21 @@ def cache(filename = 'data/aaai-19.xlsx'):
                 for ent in entry:
                     new_entry[keys[entry.index(ent)]] = ent
 
-                dict_entry[idx] = new_entry
+                if new_entry['Title'] != 'None':
+                    dict_entry[idx] = new_entry
 
             idx += 1
 
         data[str(sheet_name)] = dict_entry
+        conference_header = sheet_name
+
+        break
 
 
 '''
 method :: write index.html
 '''
-def write_file():
+def write_file(filename: str = None, conference_name: str = None):
 
     # write individual sections
 
@@ -96,15 +99,16 @@ def write_file():
                     blob = blob.replace('[{}]'.format(paper_key), paper[paper_key])
 
             temp = ""
-            if paper["News"].strip() != "None":
-   
-                news_data = paper["News"].split('[DELIM]')
+            if "News" in paper:
+                if paper["News"].strip() != "None":
+       
+                    news_data = paper["News"].split('[DELIM]')
 
-                for news in news_data:
-                    news_header = news.split('[HEADER]')[0].strip()
-                    news_link = news.split('[HEADER]')[1].strip()
+                    for news in news_data:
+                        news_header = news.split('[HEADER]')[0].strip()
+                        news_link = news.split('[HEADER]')[1].strip()
 
-                    temp += news_blob.replace('[Link]', news_link).replace('[Header]', news_header)
+                        temp += news_blob.replace('[Link]', news_link).replace('[Header]', news_header)
 
             blob = blob.replace('[News]', temp)                
             new_entry += blob
@@ -113,7 +117,7 @@ def write_file():
 
     # cache data
     print( 'Reading data...' )
-    cache( _filename )
+    cache( filename )
 
     # write problem filea
     print( 'Compiling index.html ...' )
@@ -136,15 +140,18 @@ def write_file():
     with open('index_template.html', 'r') as index_template_file:
         index_template = index_template_file.read()
 
-    index_template = index_template.replace('[HEADER]', _header)
+    index_template = index_template.replace('[HEADER]', conference_header)
 
     index_template = index_template.replace('[CONTENT]', temp_content)
     index_template = index_template.replace('[DATE]', str(datetime.datetime.now()).split(' ')[0].strip())
 
     # write to output
-    print( 'Writing to file (../index.html) ...' )
+    print( 'Writing to file (../<conference_name>.html) ...' )
 
-    with open('../index.html', 'w') as output_file:
+    try:    os.mkdir( '../'+ conference_name )
+    except: pass
+
+    with open('../{}/index.html'.format(conference_name), 'w') as output_file:
         output_file.write(index_template)
 
     print( 'Done.' )
@@ -155,7 +162,10 @@ method :: main
 '''
 def main():
 
-    parser = argparse.ArgumentParser(description='''Auto-compile video page for Yochan.''', epilog='''Usage >> python compile_page.py''')
+    parser = argparse.ArgumentParser(description='''Auto-compile conference page for Yochan.''', epilog='''Usage >> python3 compile_page.py''')
+
+    parser.add_argument('-f', '--filename', type=str, help='path to data file')
+    parser.add_argument('-c', '--name', type=str, help='name of conference to be used in url')
 
     args = parser.parse_args()
 
@@ -163,7 +173,7 @@ def main():
         print( parser.print_help() )
         sys.exit(1)
     else:
-        write_file()
+        write_file(filename = args.filename, conference_name = args.name)
 
 if __name__ == "__main__":
     main()
