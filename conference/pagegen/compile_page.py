@@ -146,7 +146,7 @@ def write_file(filename: str = None, conference_name: str = None):
     index_template = index_template.replace('[DATE]', str(datetime.datetime.now()).split(' ')[0].strip())
 
     # write to output
-    print( 'Writing to file (../<conference_name>.html) ...' )
+    print( 'Writing to file (../{}.html) ...'.format(conference_name) )
 
     try:    os.mkdir( '../'+ conference_name )
     except: pass
