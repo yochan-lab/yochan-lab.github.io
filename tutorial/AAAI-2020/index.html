@@ -2,209 +2,184 @@
 <html lang="en" class="no-js">
 <head>
     <title>SP7 AAAI 2020</title>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../ASSETS/bootstrap-4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/sticky-menu.css" rel="stylesheet">
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle menu</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand page-scroll" href="#page-top"></a>
+    <div class="row" style="height: 100vh;" class="mb-5">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xs-6" style="background-color: #d8d8d8;">
+            <img src='assets/images/cover.png' width="100%">
+        </div>
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xs-6">
+            <div class="container align-middle align-text-middle pt-5">
+                <h1 class="mt-1">Synthesizing Explainable and Deceptive Behavior in Human-AI Interaction</h1>
+                <span class="badge badge-pill badge-dark">Explainable AI</span>
+                <span class="badge badge-pill badge-dark">Interpretability</span>
+                <span class="badge badge-pill badge-dark">Sequential Decision Making</span>
+                <span class="badge badge-pill badge-dark">Automated Planning</span>
+                <h3 class="mt-5">AAAI 2020 Tutorial</h3>
+                <h6 class="mt-1 mb-3">Saturday Feb 7th 14:00 - 18:00</h6>
+                <a class="btn btn-outline-dark page-scroll" href="#abstract">Learn More</a>
+                <a class="btn btn-outline-dark page-scroll" href="#abstract">AAAI 2020</a>
             </div>
+        </div>
+    </div>
 
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="hidden">
-                        <a class="page-scroll" href="#page-top"></a>
+    <div id="abstract" class="container abstract-section pt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Overview</h3>
+                <br>
+                <p align="justify">With the increasing complexity of AI systems, it has become harder for naive users to understand these systems at an intuitive level and work with them effectively. Thus the onus is on us, as AI system developers, to equip these systems with capabilities that allow them to effectively interact and collaborate with humans-in-the-loop. In this tutorial, we will introduce the problem of human-aware decision making, and the challenges associated with generation of agent behaviors in these settings. In particular, we will discuss state-of-the-art works that have looked at capturing and reasoning with the human mental models to achieve fluent coordination. We will discuss how such models allow the agent to generate interpretable as well as privacy-preserving behavior and provide explanations. This half day tutorial is aimed at researchers and graduate students with a background and/or interest in exploring real-world AI systems that are meant to interact and collaborate with people.</p>
+                <br>
+                <p align='justify'> The audience will walk away with an introduction to the problem of human-aware decision making, and the challenges associated with generation of agent behaviors in these settings. In this tutorial, we will explore settings with an AI agent in the actor's role and a human in the observer's role. The tutorial will motivate three important problems: generation of interpretable behavior, explanations for model reconciliation and generation of privacy preserving and adversarial behavior centered around the idea that human-aware AI systems need to model both human's mental model and expectations. 
+                    All tutorial discussions will be grounded in published work on human-aware decision making both by the proposers as well as researchers across different AI communities and disciplines. By the end of the tutorial, the audience will take home an appreciation of the challenges involved in human-aware planning scenarios and different agent behaviors.</p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <h3>Summary</h3>
+                <ol align='left'>
+                    <li>
+                        Introduction to Human-Aware Decision Making
+                        <ol>
+                            <li>
+                                Agent architecture
+                            </li>
+                            <li>
+                                Challenges arising from model asymmetry
+                            </li>
+                        </ol>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#abstract">Abstract</a>
+                        Cooperative Settings with a Human-in-the-Loop
+                        <ol>
+                            <li>
+                                Interpretable Behavior
+                                <ol>
+                                    <li>
+                                        Explicable behavior with respect to observer's model
+                                    </li>
+                                    <li>
+                                        Legible behavior with respect to observer's model
+                                    </li>
+                                    <li>
+                                        Predictable behavior with respect to observer's model
+                                    </li>
+                                    <li>
+                                        Joint Planning between human and AI agent with shared goals
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                Explanations 
+                                <ol>
+                                    <li>
+                                        Explanation as Model Reconciliation
+                                    </li>
+                                    <li>
+                                        Other Types of Explanations
+                                    </li>
+                                </ol>
+                            </li>
+                            <li>
+                                Other Methods that Balance Behavior and Communication 
+                            </li>
+                        </ol>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#content">Content</a>
+                        Manipulating Human Mental Model
+                        <ol>
+                            <li>
+                                Obfuscatory Behavior
+                            </li>
+                            <li>
+                                Obfuscatory Communication
+                            </li>
+                        </ol>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#slides">Slides</a>
+                        Summary and Future Directions
                     </li>
-                    <li>
-                        <a class="page-scroll" href="#presenters">Presenters</a>
-                    </li>
-                </ul>
-            </div>	<!-- .navbar-collapse -->
-        </div>		<!-- .container -->
-    </nav>
-
-
-    <!-- Welcome   -->
-    <section id="welcome" class="welcome-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Synthesizing Explainable and Deceptive Behavior <br> in Human-AI Interaction</h1>
-                    <br> 
-                    <h3> AAAI Tutorial 2020 </h3>
-                    <p>&nbsp;</p> 
-                    <br> 
-                    <a class="btn btn-primary page-scroll" href="#abstract">Click To Scroll Down!</a>
-                </div>
+                </ol> 
             </div>
         </div>
-    </section>
 
-    <!-- Abstract -->
-    <section id="abstract" class="abstract-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Abstract</h1>
-                    <br>
-                    <p align="justify">With the increasing complexity of AI systems, it has become harder for naive users to understand these systems at an intuitive level and work with them effectively. Thus the onus is on us, as AI system developers, to equip these systems with capabilities that allow them to effectively interact and collaborate with humans-in-the-loop. In this tutorial, we will introduce the problem of human-aware decision making, and the challenges associated with generation of agent behaviors in these settings. In particular, we will discuss state-of-the-art works that have looked at capturing and reasoning with the human mental models to achieve fluent coordination. We will discuss how such models allow the agent to generate interpretable as well as privacy-preserving behavior and provide explanations. This half day tutorial is aimed at researchers and graduate students with a background and/or interest in exploring real-world AI systems that are meant to interact and collaborate with people.</p>
-                    <br>
-                    <p align='justify'> The audience will walk away with an introduction to the problem of human-aware decision making, and the challenges associated with generation of agent behaviors in these settings. In this tutorial, we will explore settings with an AI agent in the actor's role and a human in the observer's role. The tutorial will motivate three important problems: generation of interpretable behavior, explanations for model reconciliation and generation of privacy preserving and adversarial behavior centered around the idea that human-aware AI systems need to model both human's mental model and expectations. 
-                        All tutorial discussions will be grounded in published work on human-aware decision making both by the proposers as well as researchers across different AI communities and disciplines. By the end of the tutorial, the audience will take home an appreciation of the challenges involved in human-aware planning scenarios and different agent behaviors.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        <button class="btn btn-outline-dark" style="cursor: not-allowed;" disabled>Slides</button>
+    </div>
 
-    <!-- Content Section -->
-    <section id="content" class="content-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Content</h1>
-                    <ol align='left'>
-                        <li>
-                            Introduction to Human-Aware Decision Making
-                            <ol>
-                                <li>
-                                    Agent architecture
-                                </li>
-                                <li>
-                                    Challenges arising from model asymmetry
-                                </li>
-                            </ol>
-                        </li>
-                        <li>
-                            Cooperative Settings with a Human-in-the-Loop
-                            <ol>
-                                <li>
-                                    Interpretable Behavior
-                                    <ol>
-                                        <li>
-                                            Explicable behavior with respect to observer's model
-                                        </li>
-                                        <li>
-                                            Legible behavior with respect to observer's model
-                                        </li>
-                                        <li>
-                                            Predictable behavior with respect to observer's model
-                                        </li>
-                                        <li>
-                                            Joint Planning between human and AI agent with shared goals
-                                        </li>
-                                    </ol>
-                                </li>
-                                <li>
-                                    Explanations 
-                                    <ol>
-                                        <li>
-                                            Explanation as Model Reconciliation
-                                        </li>
-                                        <li>
-                                            Other Types of Explanations
-                                        </li>
-                                    </ol>
-                                </li>
-                                <li>
-                                    Other Methods that Balance Behavior and Communication 
-                                </li>
-                            </ol>
-                        </li>
-                        <li>
-                            Manipulating Human Mental Model
-                            <ol>
-                                <li>
-                                    Obfuscatory Behavior
-                                </li>
-                                <li>
-                                    Obfuscatory Communication
-                                </li>
-                            </ol>
-                        </li>
-                        <li>
-                            Summary and Future Directions
-                        </li>
-                    </ol> 
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="container mt-5 mb-5">
 
-    <!-- Slides Section -->
-    <section id="slides" class="slides-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Slides</h1>
-                    <h3> Coming soon...</h3>
-                </div>
-            </div>
-        </div>
-    </section>
+        <div class="row">
 
-    <!-- Presenters Section -->
-    <section id="presenters" class="presenters-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Presenters</h1>
-                    <br>
-                    <br>
-                    <table style="width:100%">
-                        <tr>
-                          <td><img src="assets/images/Rao.jpg" alt="photo" width="200" height="200"></td>
-                          <td width="5%"></td>
-                          <td><p align='justify'> <b>Subbarao Kambhampati</b> <br> <br>Subbarao Kambhampati is a professor of Computer Science at Arizona State University. Kambhampati studies fundamental problems in planning and decision making, motivated in particular by the challenges of human-aware AI systems. Kambhampati is a fellow of AAAI and AAAS, and the past president of AAAI. </p></td>
-                        </tr>
-                        <tr height="70"></tr>
-                        <tr>
-                            <td><img src="assets/images/Tathagata.jpg" alt="photo" width="200" height="200"></td>
-                            <td width="5%"></td>
-                            <td><p align='justify'> <b>Tathagata Chakraborti</b> <br> <br>Tathagata Chakraborti works at IBM Research on human-AI interaction and explainable AI. He had received back to back IBM PhD Fellowships, an honorable mention for the ICAPS Best Dissertation and was invited to draft the landscaping primer for the PAI Pillar on Collaborations Between People and AI Systems. </p></td>
-                        </tr>
-                        <tr height="70"></tr>
-                        <tr>
-                            <td><img src="assets/images/Sarath.jpg" alt="photo" width="200" height="200"></td>
-                            <td width="5%"></td>
-                            <td><p align='justify'> <b>Sarath Sreedharan</b> <br> <br>Sarath Sreedharan is a fourth-year Ph.D. student at Arizona State University working at Yochan lab under Prof. Subbarao Kambhampati. His research interests include explanations for automated planning and human-aware decision making. His research has been featured in conferences like AAMAS, ICAPS, ICRA, IJCAI, HRI and journals like AIJ. </p></td>
-                        </tr>
-                        <tr height="70"></tr>
-                        <tr>
-                            <td><img src="assets/images/Anagha.jpg" alt="photo" width="200" height="200"></td>
-                            <td width="5%"></td>
-                            <td><p align='justify'> <b>Anagha Kulkarni</b> <br> <br>Anagha Kulkarni is a fifth-year Ph.D. student at Arizona State University working at Yochan lab spearheaded by Prof. Subbarao Kambhampati. Her research interests include human-aware AI planning and privacy preservation planning for AI systems. Her research has been featured in conferences like AAAI, AAMAS, ICAPS, ICRA.</p></td>
-                        </tr>
-                        <tr height="100"></tr>
-                      </table>
-                </div>
-            </div>
+<div class="col-12 col-lg-3 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/Rao.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+<!--     <h6 class="card-title mb-1">Subbarao Kambhampati</h6>
+    <p class="card-subtitle mb-3 text-muted">Arizona State University</p> -->
+    <p>
+        <b>Subbarao Kambhampati</b> is a professor of Computer Science at Arizona State University. Kambhampati studies fundamental problems in planning and decision making, motivated in particular by the challenges of human-aware AI systems. Kambhampati is a fellow of AAAI and AAAS, and the past president of AAAI.
+    </p>
+    <a href="http://rakaposhi.eas.asu.edu/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+<div class="col-12 col-lg-3 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/Tathagata.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Tathagata Chakraborti</b> works at IBM Research on human-AI interaction and explainable AI. He had received back to back IBM PhD Fellowships, an honorable mention for the ICAPS Best Dissertation and was invited to draft the landscaping primer for the Partnership of AI (PAI) Pillar on Collaborations Between People and AI Systems.
+    </p>
+    <a href="http://tchakra2.com" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+<div class="col-12 col-lg-3 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/Sarath.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Sarath Sreedharan</b> is a fourth-year Ph.D. student at Arizona State University working at Yochan lab under Prof. Subbarao Kambhampati. His research interests include explanations for automated planning and human-aware decision making. His research has been featured in conferences like AAMAS, ICAPS, ICRA, IJCAI, HRI and journals like AIJ.
+    </p>
+    <a href="http://www.public.asu.edu/~ssreedh3/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+<div class="col-12 col-lg-3 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/Anagha.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Anagha Kulkarni</b> is a fifth-year Ph.D. student at Arizona State University working at Yochan lab spearheaded by Prof. Subbarao Kambhampati. Her research interests include human-aware AI planning and privacy preservation planning for AI systems. Her research has been featured in conferences like AAAI, AAMAS, ICAPS, ICRA.
+    </p>
+    <a href="https://anaghak.github.io/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
         </div>
-    </section>
-	
-	<a id="back2Top" title="Back to top" href="#">&#10148;</a>
-	
+    </div>
+
     <!-- jQuery -->
     <script src="assets/js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="../../ASSETS/bootstrap-4.0.0/js/popper.min.js"></script>
+    <script src="../../ASSETS/bootstrap-4.0.0/js/bootstrap.min.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="assets/js/jquery.easing.min.js"></script>
