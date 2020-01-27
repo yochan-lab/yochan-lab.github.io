@@ -11,13 +11,13 @@ import os, errno
 
 valid_emoji_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.ico', '.txt', '.svg', '.bmp']
 
-def download_emojis():
+def download_emojis(num):
 
-    with open('slackmojis.html', 'wb') as handle:
-        response = requests.get('https://slackmojis.com/', stream=True)
+    with open('slackmojis.html'.format(num), 'wb') as handle:
+        response = requests.get('https://slackmojis.com/categories/{}-x'.format(num), stream=True)
 
         if not response.ok:
-            print response
+            print(response) 
 
         for block in response.iter_content(1024):
             if not block:
@@ -25,7 +25,7 @@ def download_emojis():
 
             handle.write(block)
 
-    with open('slackmojis.html', 'r') as temp:
+    with open('slackmojis.html', 'r', encoding="utf8") as temp:
         slackmojis_page_html = temp.read()
 
     url_re = re.findall(r'<a href=[\'"]?([^\'" >]+)', slackmojis_page_html)
@@ -43,9 +43,9 @@ def download_emojis():
             image_name = url[url.rfind("/")+1:url.rfind("?")]
 
             current_count += 1
-            print 'processing {}/{} ... image: {}'.format(current_count, total_count, image_name)
+            print('processing {}/{}/{}/25 ... image: {}'.format(current_count, total_count, num, image_name))
 
-            filename = 'images/' + image_name 
+            filename = 'images-x/' + image_name 
 
             if not os.path.exists(os.path.dirname(filename)):
                 try:
@@ -58,15 +58,16 @@ def download_emojis():
                 response = requests.get(url, stream=True)
 
                 if not response.ok:
-                    print 'FAILED', image_name, response
+                    print('FAILED', image_name, response)
 
                 for block in response.iter_content(1024):
                     if not block:
-                        print 'FAILED', image_name, response
+                        print('FAILED', image_name, response)
                         break
 
                     handle.write(block)
 
 
 if __name__ == '__main__':
-    download_emojis()
+    for i in range(25):
+        download_emojis(i+1)
