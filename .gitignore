@@ -2,3 +2,5 @@
 desktop.ini
 robots/pagegen/~$data.xlsx
 ASSETS/slack/images/*
+**/.DS_Store
+.idea
