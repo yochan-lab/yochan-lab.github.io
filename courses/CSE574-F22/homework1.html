@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<!-- saved from url=(0114)https://icaps20subpages.icaps-conference.org/students/summer-school/icaps-online-summer-school-lab-plan-synthesis/ -->
+<html lang="en-US" data-darkreader-mode="dynamic" data-darkreader-scheme="dark" data-arp-injected="true"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style class="darkreader darkreader--fallback" media="screen"></style><style class="darkreader darkreader--text" media="screen"></style><style class="darkreader darkreader--invert" media="screen">.jfk-bubble.gtx-bubble, .captcheck_answer_label > input + img, span#closed_text > img[src^="https://www.gstatic.com/images/branding/googlelogo"], span[data-href^="https://www.hcaptcha.com/"] > #icon, #bit-notification-bar-iframe, ::-webkit-calendar-picker-indicator {
+    filter: invert(100%) hue-rotate(180deg) contrast(90%) !important;
+}</style><style class="darkreader darkreader--inline" media="screen">[data-darkreader-inline-bgcolor] {
+  background-color: var(--darkreader-inline-bgcolor) !important;
+}
+[data-darkreader-inline-bgimage] {
+  background-image: var(--darkreader-inline-bgimage) !important;
+}
+[data-darkreader-inline-border] {
+  border-color: var(--darkreader-inline-border) !important;
+}
+[data-darkreader-inline-border-bottom] {
+  border-bottom-color: var(--darkreader-inline-border-bottom) !important;
+}
+[data-darkreader-inline-border-left] {
+  border-left-color: var(--darkreader-inline-border-left) !important;
+}
+[data-darkreader-inline-border-right] {
+  border-right-color: var(--darkreader-inline-border-right) !important;
+}
+[data-darkreader-inline-border-top] {
+  border-top-color: var(--darkreader-inline-border-top) !important;
+}
+[data-darkreader-inline-boxshadow] {
+  box-shadow: var(--darkreader-inline-boxshadow) !important;
+}
+[data-darkreader-inline-color] {
+  color: var(--darkreader-inline-color) !important;
+}
+[data-darkreader-inline-fill] {
+  fill: var(--darkreader-inline-fill) !important;
+}
+[data-darkreader-inline-stroke] {
+  stroke: var(--darkreader-inline-stroke) !important;
+}
+[data-darkreader-inline-outline] {
+  outline-color: var(--darkreader-inline-outline) !important;
+}
+[data-darkreader-inline-stopcolor] {
+  stop-color: var(--darkreader-inline-stopcolor) !important;
+}</style><style class="darkreader darkreader--variables" media="screen">:root {
+   --darkreader-neutral-background: #131516;
+   --darkreader-neutral-text: #d8d4cf;
+   --darkreader-selection-background: #004daa;
+   --darkreader-selection-text: #e8e6e3;
+}</style><style class="darkreader darkreader--root-vars" media="screen"></style><style class="darkreader darkreader--user-agent" media="screen">html {
+    background-color: #181a1b !important;
+}
+html {
+    color-scheme: dark !important;
+}
+html, body {
+    background-color: #181a1b;
+}
+html, body {
+    border-color: #736b5e;
+    color: #e8e6e3;
+}
+a {
+    color: #3391ff;
+}
+table {
+    border-color: #545b5e;
+}
+::placeholder {
+    color: #b2aba1;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    background-color: #404400 !important;
+    color: #e8e6e3 !important;
+}
+::-webkit-scrollbar {
+    background-color: #202324;
+    color: #aba499;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #454a4d;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #575e62;
+}
+::-webkit-scrollbar-thumb:active {
+    background-color: #484e51;
+}
+::-webkit-scrollbar-corner {
+    background-color: #181a1b;
+}
+::selection {
+    background-color: #004daa !important;
+    color: #e8e6e3 !important;
+}
+::-moz-selection {
+    background-color: #004daa !important;
+    color: #e8e6e3 !important;
+}</style>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile">
+		<title>CSE 574: Homework 1</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="ICAPS 2020 » Feed" href="https://icaps20subpages.icaps-conference.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="ICAPS 2020 » Comments Feed" href="https://icaps20subpages.icaps-conference.org/comments/feed/">
+		<script type="text/javascript" async="" src="./src/ga.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/icaps20subpages.icaps-conference.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.7.6"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./src/wp-emoji-release.min.js" type="text/javascript" defer=""></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style><style class="darkreader darkreader--sync" media="screen"></style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./src/style.min.css" type="text/css" media="all"><style class="darkreader darkreader--sync" media="screen"></style>
+<link rel="stylesheet" id="eeb-css-frontend-css" href="./src/style.css" type="text/css" media="all"><style class="darkreader darkreader--sync" media="screen"></style>
+<link rel="stylesheet" id="short-news-social-icons-css" href="./src/socicon.css" type="text/css" media="all"><style class="darkreader darkreader--sync" media="screen"></style>
+<link rel="stylesheet" id="chld_thm_cfg_parent-css" href="./src/style(1).css" type="text/css" media="all"><style class="darkreader darkreader--sync" media="screen"></style>
+<link rel="stylesheet" id="short-news-fonts-css" href="./src/css" type="text/css" media="all">
+<link rel="stylesheet" id="short-news-style-css" href="./src/style(2).css" type="text/css" media="all"><style class="darkreader darkreader--sync" media="screen"></style>
+<style id="short-news-style-inline-css" type="text/css">
+
+			@media screen and (min-width: 600px) {
+			.site-logo {max-width: 100px;}
+			}.custom-header {background-image: url(https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/08/webpage-header1.png);}.custom-header {padding-top: 40px;padding-bottom: 40px;}.custom-header {background-position: center center;}.site-description {color: #ffffff;}
+		a, .site-title a:hover, .entry-title a:hover, .main-navigation ul ul li:hover > a, .widget a:hover, .widget_recent_comments a,
+		blockquote:before, .cat-links a, .comment-metadata .comment-edit-link, .standard-post .read-more:hover,
+		.posts-navigation a:hover, .post-navigation a:hover .meta-nav, .post-navigation a:hover .post-title,
+		.author-link a:hover, .entry-content .has-accent-color {
+		color: #0573b4;
+		}
+		button, input[type='button'], input[type='reset'], input[type='submit'], .main-navigation > ul > li.current-menu-item:after,
+		.sidebar .widget_tag_cloud a:hover, .single .cat-links a, .entry-meta-top .comments-link > span:hover, .entry-meta-top .comments-link > a:hover,
+		.standard-post .read-more:after, .newsticker .news-dot, .pagination .current, .pagination .page-numbers:hover,
+		.featured-post-header .cat-links a:hover, .post-edit-link, .reply a, #sb_instagram .sbi_follow_btn a, .entry-content .has-accent-background-color {
+		background-color: #0573b4;
+		}
+		.entry-meta-top .comments-link > a:hover:after, .entry-meta-top .comments-link > span:hover:after {border-top-color: #0573b4;}
+</style><style class="darkreader darkreader--sync" media="screen"></style>
+<script type="text/javascript" src="./src/jquery.min.js" id="jquery-core-js"></script><meta name="darkreader" content="977cd15db7cb4aa7aca4efd32c759568"><style class="darkreader darkreader--override" media="screen">.vimvixen-hint {
+    background-color: #7b5300 !important;
+    border-color: #d8b013 !important;
+    color: #f3e8c8 !important;
+}
+::placeholder {
+    opacity: 0.5 !important;
+}
+#edge-translate-panel-body,
+.MuiTypography-body1,
+.nfe-quote-text {
+    color: var(--darkreader-neutral-text) !important;
+}
+gr-main-header {
+    background-color: #0f3a48 !important;
+}
+.tou-z65h9k,
+.tou-mignzq,
+.tou-1b6i2ox,
+.tou-lnqlqk {
+    background-color: var(--darkreader-neutral-background) !important;
+}
+.tou-75mvi {
+    background-color: #032029 !important;
+}
+.tou-ta9e87,
+.tou-1w3fhi0,
+.tou-1b8t2us,
+.tou-py7lfi,
+.tou-1lpmd9d,
+.tou-1frrtv8,
+.tou-17ezmgn {
+    background-color: #0a0a0a !important;
+}
+.tou-uknfeu {
+    background-color: #231603 !important;
+}
+.tou-6i3zyv {
+    background-color: #19576c !important;
+}
+embed[type="application/pdf"][src="about:blank"] { filter: invert(100%) contrast(90%); }</style>
+<script type="text/javascript" src="./src/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="./src/custom.js" id="eeb-js-frontend-js"></script>
+<link rel="https://api.w.org/" href="https://icaps20subpages.icaps-conference.org/wp-json/"><link rel="alternate" type="application/json" href="https://icaps20subpages.icaps-conference.org/wp-json/wp/v2/pages/1886"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://icaps20subpages.icaps-conference.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://icaps20subpages.icaps-conference.org/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 5.7.6">
+<link rel="canonical" href="https://icaps20subpages.icaps-conference.org/students/summer-school/icaps-online-summer-school-lab-plan-synthesis/">
+<link rel="shortlink" href="https://icaps20subpages.icaps-conference.org/?p=1886">
+<link rel="alternate" type="application/json+oembed" href="https://icaps20subpages.icaps-conference.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ficaps20subpages.icaps-conference.org%2Fstudents%2Fsummer-school%2Ficaps-online-summer-school-lab-plan-synthesis%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://icaps20subpages.icaps-conference.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ficaps20subpages.icaps-conference.org%2Fstudents%2Fsummer-school%2Ficaps-online-summer-school-lab-plan-synthesis%2F&amp;format=xml">
+	<style type="text/css">
+			.site-title,
+		.site-description {
+			position: absolute;
+			clip: rect(1px, 1px, 1px, 1px);
+		}
+		</style><style class="darkreader darkreader--sync" media="screen"></style>
+<!-- 	<link rel="icon" href="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2019/02/logo_square.png" sizes="32x32"> -->
+<!-- <link rel="icon" href="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2019/02/logo_square.png" sizes="192x192"> -->
+<link rel="apple-touch-icon" href="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2019/02/logo_square.png">
+<meta name="msapplication-TileImage" content="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2019/02/logo_square.png">
+		<style type="text/css" id="wp-custom-css">
+			#site-navigation li a {
+   text-transform:none;
+}
+.custom-header {
+	min-height: 150px;
+}		</style><style class="darkreader darkreader--sync" media="screen"></style>
+		<script type="text/javascript" src="./src/1"></script><script type="text/javascript" async="" src="./src/taas"></script></head>
+<body class="page-template-default page page-id-1886 page-child parent-pageid-208 header-style-1 site-boxed has-no-sidebar">
+
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="https://icaps20subpages.icaps-conference.org/students/summer-school/icaps-online-summer-school-lab-plan-synthesis/#main">Skip to content</a>
+		
+	<header id="masthead" class="site-header" role="banner">
+	
+	<div class="header-bottom menu-left">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</header><!-- .site-header -->
+	
+	<div id="mobile-header" class="mobile-header">
+		<div class="mobile-navbar">
+			<div class="container">
+				<span id="menu-toggle" class="menu-toggle" title="Menu" aria-expanded="false"><span class="button-toggle"></span></span>
+							</div>
+		</div>
+		<nav id="mobile-navigation" class="main-navigation mobile-navigation" role="navigation" aria-label="Main Menu" aria-expanded="false"><ul class="main-menu mobile-menu"><li id="menu-item-1931" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1931"><a href="https://icaps20.icaps-conference.org/">Back to ICAPS’20 main page</a></li>
+</ul></nav>
+	</div>
+	
+		
+	<div id="content" class="site-content">
+		<div class="container">
+			<div class="site-inner">
+
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+
+		
+<article id="post-1886" class="post-1886 page type-page status-publish hentry">
+	
+	<header class="entry-header">
+		<h1 class="entry-title"><span>ASU CSE 574: Homework 1</span></h1><br>	
+		<h1 class="entry-title"><span>Plan Synthesis</span></h1>	
+	</header><!-- .entry-header -->
+
+		
+	<div class="entry-content">
+		
+<p>This training lab is an introduction to modelling planning problems using the Planning Domain Definition Language (PDDL). By following this tutorial you will learn the basics of PDDL, create a model for <em>temporal logistics</em>, and generate plans using an online solver.</p>
+
+<p>Tools and software required:</p>
+
+
+
+<ul><li>Everything can be run online using http://editor.planning.domains</li></ul>
+
+
+
+<p>Other resources (not required if using online editor):</p>
+
+
+
+<ul><li>The TFD temporal planning system: http://gki.informatik.uni-freiburg.de/tools/tfd</li><li>The POPF temporal planner: https://nms.kcl.ac.uk/planning/software/popf.html</li></ul>
+
+
+
+<p>Other references:</p>
+
+
+
+<ul><li>The PDDL wiki, which includes a reference and guide: https://planning.wiki</li><li>An Introduction to the Planning Domain Definition Language.<br>Haslum, P., Lipovetzky, N., Magazzeni, D., Muise, C., (2019).</li><li>PDDL – The Planning Domain Definition Language.<br>Ghallab, M., Knoblock, C., Wilkins, D., Barrett, A., Christianson, D., Friedman, M., Kwok, C., Golden, K., Penberthy, S., Smith, D., Sun, Y., &amp; Weld, D. (1998).</li><li>Fox, M., &amp; Long, D. (2003). PDDL2.1: An Extension to PDDL for Expressing Temporal Planning Domains. CoRR, abs/1106.4561. http://arxiv.org/abs/1106.4561</li></ul>
+
+
+
+<h2>Outline</h2>
+
+
+
+<ol><li>The Online Editor</li><li>Simple Switches</li><li>Basic Logistics</li><li>Temporal &amp; Numeric Logistics</li></ol>
+
+
+
+<h2>The Online Editor</h2>
+
+
+
+<p>For this tutorial, we will use the online PDDL editor at planning.domains:</p>
+
+
+
+<ul><li>http://editor.planning.domains</li></ul>
+
+
+
+<p>Feel free to use an offline editor and planner of your choice instead. Two such planners are linked from the other resources list at the top of the tutorial.</p>
+
+
+
+<h4>Sessions</h4>
+
+
+
+<p>The online editor allows you to save and share sessions. This is a useful way to work together, or to share read-only copies of your work when asking for help or giving examples.</p>
+
+
+
+<ul><li>Saving a <em>Read only</em> session will not affect the original session.</li><li>Saving a <em>Read/Write</em> session will overwrite the session with your current workspace.</li></ul>
+
+
+
+<p>Be careful to share the correct link!</p>
+
+
+
+<h2>Simple Switches</h2>
+
+
+
+<p>Task: create a planning model that executes a set of simple actions to toggle switches.</p>
+
+
+<figure class="wp-block-image size-large is-resized is-style-default"><img loading="lazy" src="./src/switches.png" alt="" class="wp-image-1889" width="359" height="168" srcset="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/switches.png 757w, https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/switches-300x141.png 300w" sizes="(max-width: 359px) 100vw, 359px"></figure>
+
+
+
+<p>The main components of a planning problem are:</p>
+
+
+
+<ul><li>A set of things that make up the world (the <strong>objects</strong>)</li><li>The properties that are used to describe the state of those things (the <strong>predicates</strong>)</li><li>A description of how the world behaves and the capabilities of the agent (the <strong>actions</strong>)</li><li>A description of the initial situation (the <strong>initial state</strong>)</li><li>A description of the desired situation (the <strong>goal</strong>)</li></ul>
+
+
+
+<h3>Initial Template</h3>
+
+
+
+<p><a href="http://editor.planning.domains/#read_session=jfespcjFc3" target="_blank" rel="noreferrer noopener">http://editor.planning.domains/#read_session=jfespcjFc3</a></p>
+
+
+
+<p>Using the link above take a look at the <strong>domain</strong> and <strong>problem</strong> PDDL files in the editor. Note that the predicates and actions are described in the domain file. The objects, their initial situation, and the goal are described in the problem file.</p>
+
+
+
+<h3>Exercise 2.1 More switches</h3>
+
+
+
+<p>Extend the domain and problem so they describe the following scenario:</p>
+
+
+
+<ol><li>There are three switches, all initially off.</li><li>Switches can be turned <em>on</em> and <em>off</em> again.</li><li>The goal is to turn all three switches <em>on</em>.</li></ol>
+
+
+
+<h3>Exercise 2.2 Tricky Switches</h3>
+
+
+
+<p>Update the problem so that:</p>
+
+
+
+<ol><li>There are five switches.</li><li>A switch can only be switched on if it has a neighbour that is already on.</li><li>The five switches are in a row so that each switch has two neighbours, except the two at the ends of the row which only have one.</li><li>The five switches are in initial positions: {off, off, on, off, off}.</li></ol>
+
+
+
+<p>You may have to create a new predicate to describe that two switches are neighbours. For example:</p>
+
+
+
+<pre class="wp-block-code"><code>(neighbours ?s1 ?s2 - switch)</code></pre>
+
+
+
+
+<h3>Exercise 2.2 Trickier Switches (bonus challenge)</h3>
+
+
+
+<p>Update the problem so that:</p>
+
+
+
+<ol><li>There are ten switches in a row.</li><li>The ten switches are in initial positions: {on, off, on, off, off, on, off, off, on, off}.</li><li>A switch can only be switched <strong>on</strong> if it has <strong>exactly one</strong> neighbour that is already on.</li></ol>
+
+
+
+<h2>Basic Logistics</h2>
+
+
+
+<p>Task: create a planning model for the basic logistics task in which drivers use trucks to deliver packages.</p>
+
+
+
+<figure class="wp-block-image size-large is-resized is-style-default"><img loading="lazy" src="./src/logistics_2-1-1024x528.png" alt="" class="wp-image-1890" width="589" height="303" srcset="https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/logistics_2-1-1024x528.png 1024w, https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/logistics_2-1-300x155.png 300w, https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/logistics_2-1-768x396.png 768w, https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/logistics_2-1-1536x792.png 1536w, https://icaps20subpages.icaps-conference.org/wp-content/uploads/2020/10/logistics_2-1.png 2014w" sizes="(max-width: 589px) 100vw, 589px"></figure>
+
+
+
+<p>The diagram above describes a set of locations and paths.</p>
+
+
+
+<h3>Exercise 3.1 Initial Domain and Problem</h3>
+
+
+
+<h4>Domain</h4>
+
+
+
+<p>You must write the <strong>domain file</strong>. The domain file should include a list of predicates and actions. It can optionally include a list of types.</p>
+
+
+
+<p>The <strong>actions</strong> should allow for the following activities:</p>
+
+
+
+<ul><li>Packages can be loaded into and out of trucks (a driver does not have to be present).</li><li>Drivers can walk between connected locations.</li><li>Drivers can get into and out of trucks.</li><li>A truck with a driver inside can move between connected locations.</li></ul>
+
+
+
+<p>The list of <strong>predicates</strong> should be those sufficient to support the actions.</p>
+
+
+
+<p>Everything not explicitly stated is up to you. For example, you can decide if it is possible for more than one driver to ride in the same truck.</p>
+
+
+
+<h4>Problem</h4>
+
+
+
+<p>You must also write the <strong>problem file</strong>. The problem file will need to include a list of objects, an initial state, and a goal.</p>
+
+
+
+<p>The <strong>objects</strong> might be:</p>
+
+
+
+<ul><li>Two drivers</li><li>Two trucks</li><li>Four packages</li><li>Eleven locations</li></ul>
+
+
+
+<p>However, your domain description may be written so that a different set of objects can be used to fulfil the same required activities.</p>
+
+
+
+<p>The <strong>initial state</strong> is shown in the diagram above:</p>
+
+
+
+<ul><li>The drivers are in locations {wp1, wp4}</li><li>The trucks are in locations {wp6, wp9}</li><li>The packages are in locations {wp2, wp3, wp5, wp11}</li></ul>
+
+
+
+<p>The <strong>goal</strong>:</p>
+
+
+
+<ul><li>Both drivers must be home in wp1.</li><li>The packages must be in their destination locations:</li><li>package 1 and 3 in location wp9</li><li>package 2 and 4 in location wp2</li></ul>
+
+
+
+	<footer class="entry-footer">
+			</footer><!-- .entry-footer -->
+
+</article><!-- #post-## -->
+
+	</main><!-- #main -->
+</div><!-- #primary -->
+
+
+
+			</div><!-- .site-inner -->
+		</div><!-- .container -->
+	</div><!-- #content -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		
+					<div class="widget-area" role="complementary">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 col-md-12" id="footer-area-1">
+							<aside id="custom_html-5" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget">
+
+<!-- 								<div style="text-align:center;">
+<a href="https://www.uni-saarland.de/en/legal-notice.html" target="_blank" rel="noopener">Legal Notice</a> &nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://www.uni-saarland.de/en/privacy.html" target="_blank" rel="noopener">Privacy Notice</a>
+</div></div></aside>						</div>	 -->
+						<!--<div class="col-4 col-md-4" id="footer-area-2">
+													</div>
+						<div class="col-4 col-md-4" id="footer-area-3">
+													</div>-->
+					</div>
+				</div>
+			</div><!-- .widget-area -->
+						
+		<div class="footer-copy">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 col-sm-12">
+						<div class="site-credits">
+							<span>© 2022 ICAPS 2020</span>														<!--<span>
+								<a href="https://wordpress.org/">
+									Powered by WordPress								</a>
+							</span>
+							<span>
+								<a href="https://www.designlabthemes.com/" rel="nofollow">
+									Theme by Design Lab								</a>
+							</span>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- .footer-copy -->
+		
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<script type="text/javascript" id="eeb-js-ajax-ef-js-extra">
+/* <![CDATA[ */
+var eeb_ef = {"ajaxurl":"https:\/\/icaps20subpages.icaps-conference.org\/wp-admin\/admin-ajax.php","security":"ad9c71fd85"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./src/encoder-form.js" id="eeb-js-ajax-ef-js"></script>
+<script type="text/javascript" src="./src/main.js" id="short-news-script-js"></script>
+<script type="text/javascript" src="./src/skip-link-focus-fix.js" id="short-news-skip-link-focus-fix-js"></script>
+<script type="text/javascript" src="./src/wp-embed.min.js" id="wp-embed-js"></script>
+
+
+
+<iframe src="./src/saved_resource.html" style="display: none;"></iframe></body></html>
