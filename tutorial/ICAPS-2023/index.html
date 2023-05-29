@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <title>N8 ICAPS 2023</title>
+    <link href="../../ASSETS/bootstrap-4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/sticky-menu.css" rel="stylesheet">
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <div class="row" style="" class="mb-5">
+        <div class="d-none d-lg-block col-lg-5 col-xs-5 m-1">
+            <img src='assets/images/cover.jpg' class="rounded float-right" height="auto" width="50%">
+        </div>
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xs-6">
+            <div class="container align-middle align-text-middle mt-5">
+                <h1 class="mt-1">On the role of Large Language Models in Planning
+                </h1>
+                <span class="badge badge-pill badge-dark">Large Language Models</span>
+                <span class="badge badge-pill badge-dark">Sequential Decision Making</span>
+                <span class="badge badge-pill badge-dark">Automated Planning</span>
+                <h3 class="mt-5">ICAPS 2023 Tutorial</h3>
+                <h6 class="mt-1 mb-3">Monday July 10 Afternoon</h6>
+                <a class="btn btn-outline-dark page-scroll" href="#abstract">Learn More</a>
+                <a class="btn btn-outline-dark page-scroll" href="https://icaps23.icaps-conference.org/">ICAPS 2023</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="abstract" class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Overview</h3>
+                <br>
+                <p align="justify">Large Language Models (LLMs, or n-gram models on steroids) that have been trained originally to generate text by repeatedly predicting the next word in the context of a window of previous words, have captured the attention of the AI (and the world) community. Part of the reason for this is their ability to produce meaningful completions for prompts relating to almost any area of human intellectual endeavors. This sheer versatility has also led to claims that these predictive text completion systems may be capable of abstract reasoning and planning. In this tutorial we take a critical look at the ability of LLMs to help in planning tasks–either in autonomous modes, or in assistive modes. We are particularly interested in characterizing these abilities–if any–in the context of problems and frameworks widely studied in the AI planning community. 
+                </p>
+                <br>
+                <p align='justify'> The tutorial will both point out the fundamental limitations of LLMs in generating plans that will normally require resolving subgoal interactions with combinatorial search, and also show constructive uses of LLMs as complementary technologies to the sound planners that are developed in the AI Planning community. In addition to presenting our own work in this area, we provide a critical survey of many related efforts, including by researchers outside of the planning community.</p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <h3>Topics covered</h3>
+                The preliminary list of  topics to be covered in this tutorial includes:  
+                <ol align='left'>
+                    <li>
+                        Background on LLMs, and patterns of LLM use–including prompting techniques
+                    </li>
+                    <li>
+                        Differentiating the use of transformer architectures vs. Pre-trained LLMs in planning
+                        <ul>
+                            <li>
+                                <i>
+                                    Mention Word2vec to plan, decision transformers, Our ongoing work on using GPT2 with fine tuning , learning verifiers
+                                </i>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs & Planning - Autonomous mode
+                        <ul>
+                            <li>
+                                Prompting in natural language or direct PDDL; effect of fine tuning; chain-of-thought prompting etc.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs as heuristics/idea generators for planning
+                        <ul>
+                            <li>
+                                Connections to Case-Based and Model-Lite planning
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Search by Back-prompting LLMS
+                        <ul>
+                            <li>
+                                Automated vs. Human-driven back-prompts (and the Clever Hans problem with the latter)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs as model acquisition techniques
+                    </li>
+                    <li>
+                        LLMs as vehicles to support general types of planning
+                        <ul>
+                            <li>
+                                Incompletely specified (highly disjunctive) goals; HTN planning; “generalized planning”
+                            </li>
+                            <li>
+                                Use of LLMs in RL settings (to get rewards, preferences) 
+                            </li>
+                        </ul>
+                    </li>
+
+                </ol> 
+            </div>
+        </div>
+
+        <a class="btn btn-outline-dark" href="#">Slides</a>
+        
+        <a class="btn btn-outline-dark" href="#">Videos</a>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h3>Organizers</h3>
+        <div class="row d-flex justify-content-center">
+<div class="col-12 col-lg-5 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/Rao.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+<!--     <h6 class="card-title mb-1">Subbarao Kambhampati</h6>
+    <p class="card-subtitle mb-3 text-muted">Arizona State University</p> -->
+    <p>
+        <b>Subbarao Kambhampati</b> is a professor of Computer Science at Arizona State University. Kambhampati studies fundamental problems in planning and decision making, motivated in particular by the challenges of human-aware AI systems. Kambhampati is a fellow of AAAI and AAAS, and the past president of AAAI.
+    </p>
+    <a href="http://rakaposhi.eas.asu.edu/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+</div>
+<div class="row d-flex justify-content-center">
+<div class="col-12 col-lg-4 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/valmeekam.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Karthik Valmeekam</b> 
+    </p>
+    <a href="http://karthikv792.github.io" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+<div class="col-12 col-lg-4 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/matthew_marquez.jpeg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Matthew Marquez</b>
+    </p>
+    <a href="https://www.linkedin.com/in/matthew-m-2661a5a0/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+<div class="col-12 col-lg-4 p-3 member">
+<div class="card">
+  <div class="container pt-3" style="text-align: center;">
+  <img class="img-circle" src="assets/images/lin.jpg" width="50%" height="auto">
+  </div>
+  <div class="card-body">
+    <p>
+        <b>Lin Guan</b>
+    </p>
+    <a href="https://guansuns.github.io/" target="_blank" class="btn btn-outline-dark">Home</a>
+  </div>
+</div>          
+</div>
+
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="assets/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../ASSETS/bootstrap-4.0.0/js/popper.min.js"></script>
+    <script src="../../ASSETS/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/sticky-menu.js"></script>
+
+</body>
+
+</html>
