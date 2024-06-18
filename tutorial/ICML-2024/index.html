@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+    <title>ICML-2024 LLMs-Planning Tutorial</title>
+    <link href="../../ASSETS/bootstrap-4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/sticky-menu.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+    <div class="row" style="" class="mb-5">
+        <div class="d-none d-lg-block col-lg-5 col-xs-5 mt-3">
+            <img src='assets/images/yochan_icon.png' class="rounded float-right" height="auto" width="50%">
+        </div>
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xs-6">
+            <div class="container align-middle align-text-middle mt-5">
+                <h1 class="mt-1">Understanding the Role of Large Language Models in Planning
+                </h1>
+                <span class="badge badge-pill badge-dark">Large Language Models</span>
+                <span class="badge badge-pill badge-dark">Sequential Decision Making</span>
+                <span class="badge badge-pill badge-dark">Automated Planning</span>
+                <h3 class="mt-5">ICML 2024 Tutorial</h3>
+                <h6 class="mt-1 mb-3">Monday, July 22 Afternoon (1pm-3pm).</h6>
+                <a class="btn btn-outline-dark page-scroll" href="#abstract">Learn More</a>
+                <a class="btn btn-outline-dark page-scroll"
+                    href="https://icml.cc/virtual/2024">ICML 2024</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="abstract" class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Overview</h3>
+                <br>
+                <p align="justify">Large Language Models (LLMs, or n-gram models on steroids) that have been trained
+                    originally to generate text by repeatedly predicting the next word in the context of a window of
+                    previous words, have captured the attention of the AI (and the world) community. Part of the reason
+                    for this is their ability to produce meaningful completions for prompts relating to almost any area
+                    of human intellectual endeavors. This sheer versatility has also led to claims that these predictive
+                    text completion systems may be capable of abstract reasoning and planning. In this tutorial we take
+                    a critical look at the ability of LLMs to help in planning tasks–either in autonomous modes, or in
+                    assistive modes. We are particularly interested in characterizing these abilities–if any–in the
+                    context of problems and frameworks widely studied in the AI planning community.
+                </p>
+                <br>
+                <p align='justify'> The tutorial will both point out the fundamental limitations of LLMs in generating
+                    plans that will normally require resolving subgoal interactions with combinatorial search, and also
+                    show constructive uses of LLMs as complementary technologies to the sound planners that are
+                    developed in the AI Planning community. In addition to presenting our own work in this area, we
+                    provide a critical survey of many related efforts, including by researchers outside of the planning
+                    community.</p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <h3>Topics covered</h3>
+                The preliminary list of topics to be covered in this tutorial includes:
+                <ol align='left'>
+                    <li>
+                        Background on LLMs, and patterns of LLM use–including prompting techniques
+                    </li>
+                    <li>
+                        Differentiating the use of transformer architectures vs. Pre-trained LLMs in planning
+                        <ul>
+                            <li>
+                                <i>
+                                    Mention Word2vec to plan, decision transformers, Our work on using GPT2 with fine
+                                    tuning , learning verifiers
+                                </i>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs & Planning - Autonomous mode
+                        <ul>
+                            <li>
+                                Prompting in natural language or direct PDDL; effect of fine tuning; chain-of-thought
+                                prompting etc.
+                            </li>
+                            <li>
+                                Limitation of self-critiquing and verification abilities of LLMs in reasoning/planning.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs as heuristics/idea generators for planning
+                        <ul>
+                            <li>
+                                Connections to Case-Based and Model-Lite planning
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Search by Back-prompting LLMS
+                        <ul>
+                            <li>
+                                Automated vs. Human-driven back-prompts (and the Clever Hans problem with the latter)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        LLMs as model acquisition techniques
+                    </li>
+                    <li>
+                        LLMs as vehicles to support general types of planning
+                        <ul>
+                            <li>
+                                Incompletely specified (highly disjunctive) goals; HTN planning; “generalized planning”
+                            </li>
+                            <li>
+                                Use of LLMs in RL settings (to get rewards, preferences)
+                            </li>
+                        </ul>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+
+        <div>
+            <h3>Materials</h3>
+            <a class="btn btn-outline-dark mt-2" href="https://arxiv.org/abs/2402.01817" target="_blank">Perspective
+                Paper</a>
+                <br>
+            
+            <div class="mt-2">
+
+            </div>
+            <div class="mt-2">
+                AAAI-2024 version
+            </div>
+            <a class="btn btn-outline-dark mt-2" href="http://bit.ly/3OQtEqT" target="_blank">Slides</a>
+            <a class="btn btn-outline-dark mt-2"
+                href="https://www.youtube.com/playlist?list=PLNONVE5W8PCR5HR1vp4t2TDnBxGTIJUcW">Videos</a>
+        </div>
+    </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h3>Organizers</h3>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 col-lg-8 p-3 member">
+                <div class="card">
+                    <div class="container pt-3" style="text-align: center;">
+                        <img class="img-circle" src="assets/images/Rao.jpg" width="30%" height="auto"
+                            style="max-width: 30%;">
+                    </div>
+                    <div class="card-body">
+                        <!--     <h6 class="card-title mb-1">Subbarao Kambhampati</h6>
+    <p class="card-subtitle mb-3 text-muted">Arizona State University</p> -->
+                        <p>
+                            <b>Subbarao Kambhampati</b> is a professor of computer science at Arizona State University.
+                            Kambhampati studies fundamental problems in planning and decision making, motivated in
+                            particular by the challenges of human-aware AI systems. He is a fellow of Association for
+                            the Advancement of Artificial Intelligence, American Association for the Advancement of
+                            Science, and Association for Computing machinery, and was an NSF Young Investigator. He
+                            served as the president of the Association for the Advancement of Artificial Intelligence, a
+                            trustee of the International Joint Conference on Artificial Intelligence, the chair of AAAS
+                            Section T (Information, Communication and Computation), and a founding board member of
+                            Partnership on AI. Kambhampati’s research as well as his views on the progress and societal
+                            impacts of AI have been featured in multiple national and international media outlets. He
+                            can be followed on Twitter <a href="https://twitter.com/rao2z" target="_blank">@rao2z</a>.
+                        </p>
+                        <a href="http://rakaposhi.eas.asu.edu/" target="_blank" class="btn btn-outline-dark">Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="container mt-5 mb-5">
+        <h3>Citation</h3>
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 p-3 member">
+                <div class="container pt-3">
+                    This version of the tutorial maybe cited as:<br><br>
+                    <p>
+                        S. Kambhampati. (2024, July).
+                        <i>Understanding the Role of Large Language Models in Planning</i>.
+                        Tutorial presented at The Forty-first International Conference on Machine Learning (ICML),
+                        Vienna.
+                        <a
+                            href="https://icml.cc/virtual/2024/tutorial/35226">https://icml.cc/virtual/2024/tutorial/35226</a>.
+                    </p>
+                    <pre>
+            @misc{kambhampati2023role,
+                author = {Kambhampati, Subbarao.},
+                title = {Understanding the Role of Large Language Models in Planning},
+                year = {2024},
+                month = {July},
+                note = {Tutorial presented at The Forty-first International Conference on Machine Learning (ICML), Vienna},
+                url = {https://icml.cc/virtual/2024/tutorial/35226}
+            }
+        </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="assets/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../ASSETS/bootstrap-4.0.0/js/popper.min.js"></script>
+    <script src="../../ASSETS/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="assets/js/jquery.easing.min.js"></script>
+    <script src="assets/js/sticky-menu.js"></script>
+
+</body>
+
+</html>
