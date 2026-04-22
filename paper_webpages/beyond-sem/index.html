@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Beyond Semantics — The Unreasonable Effectiveness of Reasonless Intermediate Tokens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;0,9..144,900;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --paper:      #ece4d0;
+  --paper-2:    #e3daC3;
+  --surface:    #f4edd8;
+  --ink:        #1a1811;
+  --ink-soft:   #4a4434;
+  --ink-faint:  #8b826b;
+  --rule:       #c9bfa3;
+  --hot:        #b74a29;
+  --hot-soft:   #d97b4b;
+  --cool:       #2d5f5f;
+  --cool-soft:  #5d908e;
+  --sun:        #d99d20;
+  --ff-serif:   'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --ff-sans:    'IBM Plex Sans', system-ui, sans-serif;
+  --ff-mono:    'IBM Plex Mono', ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+  --paper:      #14130c;
+  --paper-2:    #1a1810;
+  --surface:    #201d13;
+  --ink:        #ece4d0;
+  --ink-soft:   #b8ad92;
+  --ink-faint:  #6b6450;
+  --rule:       #2f2b1e;
+  --hot:        #e67a4a;
+  --hot-soft:   #f0a078;
+  --cool:       #79b6b4;
+  --cool-soft:  #9ecdcb;
+  --sun:        #e8ba4a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ff-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+  background-attachment: fixed;
+}
+[data-theme="dark"] body { background-image:
+    linear-gradient(rgba(255,240,200,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,240,200,.04) 1px, transparent 1px); }
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(183,74,41,.07), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 90% 100%, rgba(45,95,95,.07), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+[data-theme="dark"] body::before {
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(230,122,74,.10), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 90% 100%, rgba(121,182,180,.09), transparent 60%);
+}
+
+a { color: var(--hot); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s, color .15s; }
+a:hover { border-bottom-color: var(--hot); }
+
+/* ───── Layout ───── */
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+section { padding: 72px 0; position: relative; }
+section + section { border-top: 1px dashed var(--rule); }
+
+/* ───── Top rail ───── */
+.rail {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.rail-logo { display: flex; align-items: center; gap: 10px; }
+.rail-logo .mark {
+  display: inline-grid; grid-template-columns: repeat(3,6px); grid-template-rows: repeat(3,6px); gap: 1px;
+}
+.rail-logo .mark i { background: var(--rule); }
+.rail-logo .mark i:nth-child(1),
+.rail-logo .mark i:nth-child(5),
+.rail-logo .mark i:nth-child(9) { background: var(--hot); }
+.rail-nav { display: flex; gap: 22px; }
+.rail-nav a { color: var(--ink-faint); border-bottom: none; }
+.rail-nav a:hover { color: var(--hot); }
+.rail-right { display: flex; gap: 14px; align-items: center; }
+
+.theme-toggle {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  width: 46px; height: 22px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color .2s;
+  padding: 0;
+}
+.theme-toggle:hover { border-color: var(--hot); }
+.theme-toggle::after {
+  content: '';
+  position: absolute;
+  left: 2px; top: 2px;
+  width: 16px; height: 16px;
+  background: var(--hot);
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+[data-theme="dark"] .theme-toggle::after { transform: translateX(22px); background: var(--sun); }
+
+/* ───── Hero ───── */
+.hero { padding: 80px 0 50px; position: relative; }
+.folio {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--ff-mono); font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 12px;
+}
+.folio span:nth-child(2) { color: var(--hot); }
+
+.hero h1 {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 144;
+  font-weight: 900;
+  font-size: clamp(2.1rem, 5.6vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -.025em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--hot);
+  font-variation-settings: "opsz" 144;
+}
+.hero-sub {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: 1.08rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 640px;
+  margin-bottom: 40px;
+  line-height: 1.55;
+}
+
+/* ───── Authors ───── */
+.authors {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 32px;
+}
+@media(max-width: 760px){ .authors { grid-template-columns: repeat(2, 1fr); } }
+.author {
+  padding: 14px 10px;
+  border-right: 1px dashed var(--rule);
+  text-align: center;
+}
+.author:last-child { border-right: none; }
+.author .idx {
+  font-family: var(--ff-mono); font-size: .65rem;
+  color: var(--ink-faint); letter-spacing: .1em;
+  display: block; margin-bottom: 4px;
+}
+.author .nm {
+  font-family: var(--ff-serif);
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.aff-line {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  color: var(--ink-faint);
+  text-align: center;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.author .nm sup.eq {
+  color: var(--hot);
+  font-weight: 700;
+  font-family: var(--ff-serif);
+  font-size: .7em;
+  margin-left: 1px;
+  top: -.4em;
+  position: relative;
+}
+.eq-note {
+  font-family: var(--ff-mono);
+  font-size: .7rem;
+  color: var(--ink-faint);
+  text-align: center;
+  letter-spacing: .03em;
+  margin-bottom: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1.6;
+}
+.eq-note sup { color: var(--hot); font-weight: 700; margin-right: 2px; }
+
+/* ───── Hero links ───── */
+.hero-links {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  font-family: var(--ff-mono);
+  font-size: .78rem; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  cursor: pointer; transition: all .15s;
+  border-bottom: 1px solid var(--ink);
+}
+.btn:hover { background: var(--ink); color: var(--paper); border-bottom-color: var(--ink); }
+.btn-accent { background: var(--hot); color: #fff; border-color: var(--hot); }
+.btn-accent:hover { background: transparent; color: var(--hot); border-color: var(--hot); border-bottom-color: var(--hot); }
+.btn svg { flex-shrink: 0; }
+
+/* ───── TLDR ───── */
+.tldr {
+  margin-top: 48px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 28px 32px;
+  position: relative;
+}
+.tldr::before {
+  content: '§';
+  position: absolute; top: -14px; left: 24px;
+  width: 28px; height: 28px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-serif); font-weight: 800; color: var(--hot);
+}
+.tldr-label {
+  font-family: var(--ff-mono); font-size: .7rem;
+  color: var(--hot); letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.tldr p {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: 1.02rem; color: var(--ink);
+  line-height: 1.7;
+}
+.tldr p strong { color: var(--hot); font-weight: 700; }
+
+/* ───── Section headers ───── */
+.sec-mark {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 28px;
+}
+.sec-num {
+  font-family: var(--ff-mono);
+  font-size: .85rem; font-weight: 500;
+  color: var(--hot);
+  letter-spacing: .04em;
+  padding: 3px 10px;
+  border: 1px solid var(--hot);
+}
+.sec-title {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 48;
+  font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+.sec-title em { font-style: italic; font-weight: 500; color: var(--hot); }
+.sec-kicker {
+  font-family: var(--ff-mono); font-size: .72rem;
+  color: var(--ink-faint); letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ───── Maze figure ───── */
+.maze-figure {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  margin: 28px 0 12px;
+  align-items: stretch;
+}
+@media(max-width: 680px){ .maze-figure { grid-template-columns: 1fr; } }
+.maze-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 18px;
+}
+.maze-card h4 {
+  font-family: var(--ff-mono); font-size: .72rem;
+  color: var(--ink-faint); letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.maze-card h4 strong { color: var(--hot); font-weight: 500; }
+.maze-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 1px;
+  aspect-ratio: 1/1;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+.mc {
+  background: var(--paper-2);
+}
+.mc.w { background: var(--ink); }
+.mc.o { background: var(--cool-soft); opacity: .55; }
+.mc.p { background: var(--hot); }
+.mc.s { background: var(--sun); }
+.mc.g { background: var(--cool); }
+.maze-legend {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-top: 12px;
+  font-family: var(--ff-mono); font-size: .68rem;
+  color: var(--ink-faint); letter-spacing: .04em;
+}
+.maze-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.maze-legend i { display: inline-block; width: 10px; height: 10px; }
+
+/* ───── Findings / cards grid ───── */
+.cards {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+  margin-top: 10px;
+}
+@media(max-width: 680px){ .cards { grid-template-columns: 1fr; } }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 26px 24px;
+  position: relative;
+  transition: transform .15s, border-color .15s;
+}
+.card:hover { border-color: var(--hot); transform: translateY(-2px); }
+.card .tag {
+  font-family: var(--ff-mono); font-size: .66rem;
+  color: var(--hot); letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.card .big {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 48;
+  font-size: 2.4rem; font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -.02em;
+}
+.card .big em { font-style: italic; color: var(--hot); font-weight: 500; }
+.card .lede {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: .98rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+.card .desc {
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.card .desc strong { color: var(--ink); }
+
+/* ───── Pipeline ───── */
+.pipe {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 28px 0 8px;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+@media(max-width: 760px){ .pipe { grid-template-columns: 1fr 1fr; } }
+.pipe-step {
+  padding: 20px 18px;
+  border-right: 1px dashed var(--rule);
+  position: relative;
+}
+.pipe-step:last-child { border-right: none; }
+.pipe-step .n {
+  font-family: var(--ff-mono); font-size: .68rem;
+  color: var(--hot); letter-spacing: .12em;
+  margin-bottom: 8px;
+}
+.pipe-step .h {
+  font-family: var(--ff-serif); font-weight: 600;
+  font-size: 1.02rem; color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+.pipe-step .d {
+  font-size: .8rem; color: var(--ink-soft); line-height: 1.55;
+}
+
+/* ───── Table of results ───── */
+.table-scroll { overflow-x: auto; margin: 24px 0 8px; }
+.tbl-caption {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: .9rem;
+  color: var(--ink-soft);
+  padding: 0 2px 12px;
+  line-height: 1.5;
+  max-width: 820px;
+}
+.tbl-caption span {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--hot);
+  letter-spacing: .06em;
+  margin-right: 10px;
+  padding: 2px 8px;
+  border: 1px solid var(--hot);
+}
+.tbl-caption strong { color: var(--ink); font-weight: 600; }
+
+table.results {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  background: var(--surface);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+table.results th, table.results td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: middle;
+}
+table.results thead th {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: .88rem;
+  color: var(--ink);
+  background: transparent;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  border-bottom: 1px solid var(--ink);
+  padding: 9px 14px;
+}
+table.results td .acc {
+  font-family: var(--ff-mono);
+  color: var(--ink);
+  font-weight: 500;
+}
+table.results td .tv {
+  font-family: var(--ff-mono);
+  font-size: .78rem;
+  color: var(--ink-faint);
+  margin-left: 2px;
+}
+table.results .zero {
+  color: var(--hot); font-weight: 500;
+}
+
+/* GRPO paper-style variant */
+table.results.grpo td.ckpt {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  vertical-align: middle;
+  border-right: 1px solid var(--rule);
+  width: 90px;
+}
+table.results.grpo td.mt {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-weight: 500;
+  color: var(--ink);
+  width: 110px;
+}
+table.results.grpo tr.ckpt-start td {
+  padding-top: 12px;
+}
+/* horizontal divider between checkpoint groups */
+table.results.grpo tbody > tr.ckpt-start td {
+  border-top: 1px solid var(--rule);
+}
+table.results.grpo tbody > tr:first-child td {
+  border-top: none;
+}
+table.results.grpo tr.highlight td:not(.ckpt) {
+  background: rgba(183,74,41,.07);
+}
+table.results.grpo tr.highlight td.mt {
+  color: var(--hot);
+  font-weight: 600;
+}
+table.results.grpo tr.highlight td.ckpt {
+  color: var(--hot);
+  background: rgba(183,74,41,.07);
+}
+.tbl-note {
+  font-family: var(--ff-mono);
+  font-size: .72rem; color: var(--ink-faint);
+  margin-top: 8px; line-height: 1.6;
+}
+
+/* ───── Bars comparison ───── */
+.bars {
+  display: flex; flex-direction: column; gap: 14px;
+  margin: 24px 0 8px;
+}
+.bar {
+  display: grid;
+  grid-template-columns: 150px 1fr 56px;
+  gap: 12px; align-items: center;
+  font-size: .82rem;
+}
+@media(max-width: 640px){ .bar { grid-template-columns: 110px 1fr 48px; font-size: .76rem; } }
+.bar .lbl { color: var(--ink-soft); font-family: var(--ff-mono); font-size: .74rem; text-align: right; }
+.bar .trk {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  height: 26px; position: relative; overflow: hidden;
+}
+.bar .fil {
+  height: 100%;
+  background: var(--hot);
+  display: flex; align-items: center;
+  padding-left: 10px;
+  color: #fff;
+  font-family: var(--ff-mono); font-size: .7rem; font-weight: 500;
+  transition: width 1.4s cubic-bezier(.16,1,.3,1);
+  width: 0%;
+}
+.bar .fil.swap { background: repeating-linear-gradient(45deg, var(--hot), var(--hot) 6px, var(--hot-soft) 6px, var(--hot-soft) 12px); }
+.bar .fil.norm { background: var(--cool); }
+.bar .fil.base { background: var(--ink-faint); }
+.bar .val { font-family: var(--ff-mono); font-size: .8rem; color: var(--ink); }
+
+.key {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  font-family: var(--ff-mono); font-size: .72rem; color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.key span { display: inline-flex; align-items: center; gap: 7px; }
+.key i { display: inline-block; width: 18px; height: 10px; }
+.key i.swap { background: repeating-linear-gradient(45deg, var(--hot), var(--hot) 4px, var(--hot-soft) 4px, var(--hot-soft) 8px); }
+.key i.norm { background: var(--cool); }
+.key i.base { background: var(--ink-faint); }
+
+.tab-group { margin-bottom: 8px; }
+.tabs {
+  display: flex; gap: 0;
+  border: 1px solid var(--rule);
+  margin-bottom: 18px;
+  width: fit-content;
+}
+.tabs button {
+  font-family: var(--ff-mono); font-size: .74rem;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 8px 16px;
+  background: transparent; border: none;
+  color: var(--ink-soft); cursor: pointer;
+  border-right: 1px solid var(--rule);
+  transition: all .15s;
+}
+.tabs button:last-child { border-right: none; }
+.tabs button.active { background: var(--ink); color: var(--paper); }
+.tabs button:hover:not(.active) { background: var(--paper-2); color: var(--ink); }
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn .35s ease; }
+
+/* ───── Quote / pull ───── */
+.pull {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 48;
+  font-size: 1.4rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+  border-left: 3px solid var(--hot);
+  padding: 18px 0 18px 26px;
+  margin: 36px 0;
+  font-weight: 500;
+  position: relative;
+}
+.pull::after {
+  content: '— Section 6';
+  display: block;
+  font-family: var(--ff-mono);
+  font-style: normal;
+  font-size: .72rem;
+  color: var(--ink-faint);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 14px;
+  font-weight: 500;
+}
+
+/* ───── Takeaways ───── */
+.takeaways {
+  display: flex; flex-direction: column; gap: 0;
+  margin-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+.tk {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+@media(max-width: 600px){ .tk { grid-template-columns: 48px 1fr; gap: 16px; } }
+.tk-n {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 144;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--hot);
+  letter-spacing: -.03em;
+}
+.tk-t {
+  font-family: var(--ff-serif);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.tk-d {
+  font-size: .9rem; color: var(--ink-soft); line-height: 1.7;
+}
+.tk-d strong { color: var(--hot); font-weight: 600; }
+
+/* ───── Figure 3 swap-rate lines ───── */
+.swap-key {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  font-family: var(--ff-mono); font-size: .72rem;
+  color: var(--ink-soft);
+  margin: 10px 0 18px;
+}
+.swap-key span { display: inline-flex; align-items: center; gap: 7px; }
+.swap-key i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; }
+
+.fig3-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  margin: 4px 0 22px;
+}
+@media(max-width: 720px){ .fig3-grid { grid-template-columns: 1fr; } }
+.fig3-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 20px;
+}
+.fig3-card h4 {
+  font-family: var(--ff-mono); font-size: .72rem;
+  color: var(--ink-faint); letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.fig3-card h4 strong { color: var(--ink); font-weight: 500; }
+.fig3-svg { width: 100%; height: auto; display: block; color: var(--ink); }
+.fig3-note {
+  font-family: var(--ff-serif);
+  font-variation-settings: "opsz" 14;
+  font-size: .82rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+/* ───── Length scatter ───── */
+.scatter-wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  margin: 22px 0;
+}
+@media(max-width: 720px){ .scatter-wrap { grid-template-columns: 1fr; } }
+.scatter {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 20px;
+}
+.scatter h4 {
+  font-family: var(--ff-mono); font-size: .7rem;
+  color: var(--ink-faint); letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.scatter h4 strong { color: var(--hot); font-weight: 500; }
+.scatter svg { width: 100%; height: auto; display: block; }
+.scatter .stat {
+  display: flex; justify-content: space-between;
+  font-family: var(--ff-mono); font-size: .74rem;
+  margin-top: 8px;
+  color: var(--ink-soft);
+}
+.scatter .stat strong { color: var(--hot); font-weight: 500; }
+
+/* ───── Citation ───── */
+.cite-wrap {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 24px;
+  position: relative;
+}
+.cite-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--rule);
+}
+.cite-label {
+  font-family: var(--ff-mono); font-size: .7rem;
+  color: var(--hot); letter-spacing: .12em;
+}
+.copy {
+  font-family: var(--ff-mono); font-size: .7rem;
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  cursor: pointer;
+  letter-spacing: .08em; text-transform: uppercase;
+  transition: all .15s;
+}
+.copy:hover { border-color: var(--hot); color: var(--hot); }
+.copy.ok { background: var(--hot); color: #fff; border-color: var(--hot); }
+pre.bib {
+  font-family: var(--ff-mono); font-size: .78rem;
+  color: var(--ink); line-height: 1.75;
+  white-space: pre-wrap; word-break: break-all;
+}
+pre.bib .k { color: var(--cool); }
+pre.bib .v { color: var(--hot); }
+
+/* ───── Footer ───── */
+footer {
+  padding: 40px 28px 30px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper-2);
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  color: var(--ink-faint);
+  letter-spacing: .04em;
+  margin-top: 40px;
+}
+footer .wrap {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+}
+footer a { color: var(--ink-soft); border-bottom-color: transparent; }
+
+/* ───── Reveal ───── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s, transform .65s; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--paper-2); }
+::-webkit-scrollbar-thumb { background: var(--rule); border: 2px solid var(--paper-2); }
+::-webkit-scrollbar-thumb:hover { background: var(--hot); }
+</style>
+</head>
+<body>
+
+<!-- Top rail -->
+<nav class="rail">
+  <div class="rail-logo">
+    <span class="mark"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span>Yochan Lab</span>
+  </div>
+  <div class="rail-nav">
+    <a href="#findings">Findings</a>
+    <a href="#setup">Setup</a>
+    <a href="#results">Results</a>
+    <a href="#length">Length</a>
+    <a href="#cite">Cite</a>
+  </div>
+  <div class="rail-right">
+    <span style="color:var(--ink-faint)">TMLR · 2025</span>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <div class="folio">
+      <span>Published · TMLR 2025</span>
+      <span>Arizona State University</span>
+      <span>arXiv:2505.13775</span>
+    </div>
+
+    <h1>Beyond Semantics: the <em>unreasonable</em> effectiveness of reasonless intermediate tokens.</h1>
+
+    <p class="hero-sub">
+      A controlled study training transformers from scratch on formally verifiable A<sup>*</sup> traces. Models trained on reasoning that has <em>nothing to do with the problem at hand</em> match — and often beat — models trained on correct traces. The lesson: intermediate tokens help, but not for the reasons we tell ourselves.
+    </p>
+
+    <div class="authors">
+      <div class="author"><span class="idx">01</span><span class="nm">Karthik Valmeekam<sup class="eq">*&#8239;†</sup></span></div>
+      <div class="author"><span class="idx">02</span><span class="nm">Vardhan Palod<sup class="eq">*</sup></span></div>
+      <div class="author"><span class="idx">03</span><span class="nm">Kaya Stechly<sup class="eq">*&#8239;‡</sup></span></div>
+      <div class="author"><span class="idx">04</span><span class="nm">Atharva Gundawar</span></div>
+      <div class="author"><span class="idx">05</span><span class="nm">Subbarao Kambhampati</span></div>
+    </div>
+    <div class="aff-line">School of Computing &amp; AI · Arizona State University</div>
+    <div class="eq-note">
+      <span><sup>*</sup> Equal contribution — joint first authors.</span>
+      <span><sup>†</sup> Work done while at ASU; currently at Amazon AGI.</span>
+      <span><sup>‡</sup> Work done while at ASU; currently at Yale University.</span>
+    </div>
+
+    <div class="hero-links">
+      <a class="btn btn-accent" href="https://arxiv.org/abs/2505.13775" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        arXiv Paper
+      </a>
+      <a class="btn" href="https://arxiv.org/pdf/2505.13775" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        PDF
+      </a>
+      <a class="btn" href="https://yochan-lab.github.io/" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+        Yochan Lab
+      </a>
+      <a class="btn" href="#cite">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Cite
+      </a>
+    </div>
+
+    <!-- TLDR -->
+    <div class="tldr reveal">
+      <div class="tldr-label">Abstract · in one breath</div>
+      <p>
+        We train 0.5B-parameter transformers from scratch on formally verifiable A<sup>*</sup> traces for grid-maze pathfinding — a domain where every intermediate token can be checked by a verifier. Three things happen that shouldn't. <strong>Models produce correct plans from invalid traces.</strong> <strong>Models trained on traces from unrelated problems generalize better than models trained on correct traces.</strong> <strong>Reinforcement learning raises accuracy while lowering trace validity.</strong> Taken together, the results argue that so-called "Chains of Thought" do not necessarily mean what they seem to mean.
+      </p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Setup -->
+  <section id="setup">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 01 — Setup</div>
+        <h2 class="sec-title">A gridworld where every <em>thought</em> can be checked.</h2>
+      </div>
+    </div>
+
+    <p class="reveal" style="color:var(--ink-soft); font-size: .98rem; max-width: 720px;">
+      Pre-trained models make trace-validity a matter of interpretation — natural-language traces are too ambiguous to formally audit. So we shrink the problem until it becomes auditable: 30×30 mazes, four orthogonal actions, a vocabulary of 944 tokens, and an A<sup>*</sup> validator that replays every <code style="font-family:var(--ff-mono);font-size:.88em">create</code>/<code style="font-family:var(--ff-mono);font-size:.88em">close</code> operation against an open and closed list.
+    </p>
+
+    <div class="maze-figure">
+      <div class="maze-card reveal">
+        <h4>In-distribution · <strong>Wilson's algorithm</strong> (spanning tree)</h4>
+        <div class="maze-grid" id="maze-wilson"></div>
+        <div class="maze-legend">
+          <span><i style="background:var(--sun)"></i>start</span>
+          <span><i style="background:var(--cool)"></i>goal</span>
+          <span><i style="background:var(--hot)"></i>A<sup>*</sup> path</span>
+          <span><i style="background:var(--cool-soft);opacity:.55"></i>explored</span>
+          <span><i style="background:var(--ink)"></i>wall</span>
+        </div>
+      </div>
+      <div class="maze-card reveal">
+        <h4>Out-of-distribution · <strong>Drunkard's Walk</strong> (caves with loops)</h4>
+        <div class="maze-grid" id="maze-drunk"></div>
+        <div class="maze-legend">
+          <span>5 generators total:</span>
+          <span>Wilson · Kruskal · DFS · Drunkard · SF-style</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipe reveal">
+      <div class="pipe-step">
+        <div class="n">01</div>
+        <div class="h">Generate mazes</div>
+        <div class="d">30×30 grids from 5 algorithms, acyclic trees and cyclic caves.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="n">02</div>
+        <div class="h">Run A<sup>*</sup>, linearize trace</div>
+        <div class="d"><code style="font-family:var(--ff-mono)">create x y cG cH</code> / <code style="font-family:var(--ff-mono)">close x y cG cH</code> token stream.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="n">03</div>
+        <div class="h">Train from scratch</div>
+        <div class="d">0.5B Qwen2.5 variant, 944-token vocab, 32k context, 500k problems.</div>
+      </div>
+      <div class="pipe-step">
+        <div class="n">04</div>
+        <div class="h">Formal verifier</div>
+        <div class="d">Replays generated trace on open/closed lists. Flags parsing, wall, neighbor, plan-mismatch errors.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Findings -->
+  <section id="findings">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 02 — Findings</div>
+        <h2 class="sec-title">Four results that <em>should not</em> be true.</h2>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card reveal">
+        <div class="tag">Finding 01</div>
+        <div class="big">Correct plans, <em>invalid</em> traces.</div>
+        <div class="lede">Trace validity ≠ solution correctness.</div>
+        <div class="desc">
+          Correct-trace-trained models still produce <strong>correct plans from invalid traces</strong>: up to 8% of correct plans for the Wilson model and up to 19% for the SF-style model. On the hardest length-generalization bin, only <strong>52%</strong> of correct plans come from valid traces. If traces drove solutions, this number would be 100.
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="tag">Finding 02</div>
+        <div class="big">Swapped beats <em>correct</em>.</div>
+        <div class="lede">Irrelevant traces match or outperform real ones.</div>
+        <div class="desc">
+          Train models on traces from <em>other</em> mazes (the "Swapped" setup) and accuracy doesn't drop — it rises on OOD. On the cave-like Drunkard set, the SF-style Swapped model hits <strong>95.4%</strong> where the correct-trace model gets 62.1%. Trace validity: <strong>0.0%</strong>.
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="tag">Finding 03</div>
+        <div class="big">RL <em>widens</em> the gap.</div>
+        <div class="lede">GRPO improves accuracy while eroding traces.</div>
+        <div class="desc">
+          Post-training the SF-style correct-trace model with GRPO pushes plan accuracy up and trace validity <strong>down from 89% to 52%</strong>. The Swapped models keep improving too — still at 0% trace validity throughout.
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="tag">Finding 04</div>
+        <div class="big">Length is <em>not</em> thinking.</div>
+        <div class="lede">Trace length ⊥ problem complexity.</div>
+        <div class="desc">
+          Pearson correlation between generated trace length and ground-truth A<sup>*</sup> length: <strong>r = 0.0081</strong> for Wilson, <strong>r = 0.02</strong> for Wilson-model evaluated on OOD SF-style mazes. Longer traces are not "inference-time scaling" — they're sampling noise.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 03 — Main result</div>
+        <h2 class="sec-title">When <em>nonsense</em> traces learn better.</h2>
+      </div>
+    </div>
+
+    <p class="reveal" style="color:var(--ink-soft); max-width: 720px; font-size: .96rem;">
+      Plan accuracy on 1,000 held-out problems per maze type, following 500k-sample training runs. <strong style="color:var(--hot)">Swapped</strong> models see reasoning traces from completely unrelated mazes during training; the target plan is still the correct one for the presented problem.
+    </p>
+
+    <div class="tab-group">
+    <div class="tabs reveal">
+      <button class="tab active" data-tab="wilson">Wilson-trained</button>
+      <button class="tab" data-tab="sf">SF-style trained</button>
+    </div>
+
+    <!-- Wilson panel -->
+    <div class="panel active reveal" id="tab-wilson">
+      <div class="key">
+        <span><i class="base"></i>Solution-only baseline</span>
+        <span><i class="norm"></i>Normal (correct traces)</span>
+        <span><i class="swap"></i>Swapped (irrelevant traces)</span>
+      </div>
+      <div class="bars">
+        <!-- Wilson test set -->
+        <div class="bar"><div class="lbl">Wilson · baseline</div><div class="trk"><div class="fil base" data-v="10">10.0%</div></div><div class="val">10.0</div></div>
+        <div class="bar"><div class="lbl">Wilson · normal</div><div class="trk"><div class="fil norm" data-v="79.9">79.9%</div></div><div class="val">79.9</div></div>
+        <div class="bar"><div class="lbl">Wilson · swapped</div><div class="trk"><div class="fil swap" data-v="83.3">83.3%</div></div><div class="val">83.3</div></div>
+        <div class="bar"><div class="lbl">Kruskal · normal</div><div class="trk"><div class="fil norm" data-v="83.2">83.2%</div></div><div class="val">83.2</div></div>
+        <div class="bar"><div class="lbl">Kruskal · swapped</div><div class="trk"><div class="fil swap" data-v="85">85.0%</div></div><div class="val">85.0</div></div>
+        <div class="bar"><div class="lbl">DFS · normal</div><div class="trk"><div class="fil norm" data-v="54">54.0%</div></div><div class="val">54.0</div></div>
+        <div class="bar"><div class="lbl">DFS · swapped</div><div class="trk"><div class="fil swap" data-v="52.6">52.6%</div></div><div class="val">52.6</div></div>
+        <div class="bar"><div class="lbl">Drunkard · normal</div><div class="trk"><div class="fil norm" data-v="0">0.0%</div></div><div class="val">0.0</div></div>
+        <div class="bar"><div class="lbl">Drunkard · swapped</div><div class="trk"><div class="fil swap" data-v="11.7">11.7%</div></div><div class="val">11.7</div></div>
+      </div>
+    </div>
+
+    <!-- SF panel -->
+    <div class="panel reveal" id="tab-sf">
+      <div class="key">
+        <span><i class="norm"></i>Normal (correct traces)</span>
+        <span><i class="swap"></i>Swapped (irrelevant traces)</span>
+      </div>
+      <div class="bars">
+        <div class="bar"><div class="lbl">Wilson · normal</div><div class="trk"><div class="fil norm" data-v="40.8">40.8%</div></div><div class="val">40.8</div></div>
+        <div class="bar"><div class="lbl">Wilson · swapped</div><div class="trk"><div class="fil swap" data-v="45.8">45.8%</div></div><div class="val">45.8</div></div>
+        <div class="bar"><div class="lbl">Kruskal · normal</div><div class="trk"><div class="fil norm" data-v="44.6">44.6%</div></div><div class="val">44.6</div></div>
+        <div class="bar"><div class="lbl">Kruskal · swapped</div><div class="trk"><div class="fil swap" data-v="51">51.0%</div></div><div class="val">51.0</div></div>
+        <div class="bar"><div class="lbl">DFS · normal</div><div class="trk"><div class="fil norm" data-v="19.9">19.9%</div></div><div class="val">19.9</div></div>
+        <div class="bar"><div class="lbl">DFS · swapped</div><div class="trk"><div class="fil swap" data-v="29">29.0%</div></div><div class="val">29.0</div></div>
+        <div class="bar"><div class="lbl">Drunkard · normal</div><div class="trk"><div class="fil norm" data-v="62.1">62.1%</div></div><div class="val">62.1</div></div>
+        <div class="bar"><div class="lbl">Drunkard · swapped</div><div class="trk"><div class="fil swap" data-v="95.4">95.4%</div></div><div class="val">95.4</div></div>
+        <div class="bar"><div class="lbl">SF-style · normal</div><div class="trk"><div class="fil norm" data-v="56.2">56.2%</div></div><div class="val">56.2</div></div>
+        <div class="bar"><div class="lbl">SF-style · swapped</div><div class="trk"><div class="fil swap" data-v="89.1">89.1%</div></div><div class="val">89.1</div></div>
+      </div>
+    </div>
+    </div><!-- /.tab-group -->
+
+    <!-- Figure 3: % of swapped traces -->
+    <h3 class="reveal" style="font-family:var(--ff-serif);font-weight:700;font-size:1.4rem;margin-top:56px;margin-bottom:6px;">The <em style="color:var(--hot)">U-shape</em>: how much swapping is too much?</h3>
+    <p class="reveal" style="color:var(--ink-soft); font-size: .94rem; margin-bottom: 14px;">
+      Instead of fully replacing the trace distribution, we sweep the proportion of examples receiving mismatched traces. A little swapping hurts — a lot of swapping <em>helps</em>. Plan accuracy traces a U; trace validity monotonically collapses. Wilson-trained, 50k samples.
+    </p>
+
+    <div class="swap-key reveal">
+      <span><i style="background:var(--cool)"></i>Wilson</span>
+      <span><i style="background:var(--hot)"></i>Kruskal</span>
+      <span><i style="background:var(--sun)"></i>DFS</span>
+      <span><i style="background:var(--cool-soft)"></i>Drunkard</span>
+    </div>
+
+    <div class="fig3-grid">
+      <div class="fig3-card reveal">
+        <h4>(a) <strong>Plan accuracy</strong> vs % swapped traces</h4>
+        <svg viewBox="0 0 340 240" class="fig3-svg" aria-label="swap rate vs plan accuracy">
+          <defs>
+            <pattern id="fig3-grid" width="31.2" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 31.2 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-width=".5"/>
+            </pattern>
+          </defs>
+          <rect x="40" y="16" width="284" height="190" fill="url(#fig3-grid)"/>
+          <!-- axes -->
+          <line x1="40" y1="206" x2="324" y2="206" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="40" y1="16"  x2="40"  y2="206" stroke="currentColor" stroke-opacity=".5"/>
+          <!-- y ticks -->
+          <g font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="end">
+            <text x="36" y="209">0</text>
+            <text x="36" y="162">25</text>
+            <text x="36" y="114">50</text>
+            <text x="36" y="67">75</text>
+            <text x="36" y="20">100</text>
+          </g>
+          <!-- x ticks -->
+          <g font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="middle">
+            <text x="40"  y="222">0</text>
+            <text x="111" y="222">25</text>
+            <text x="182" y="222">50</text>
+            <text x="253" y="222">75</text>
+            <text x="324" y="222">100</text>
+          </g>
+          <!-- lines: x = 40+(i*71), y = 206 - v*1.9 -->
+          <!-- Wilson [50,33,27,45,52] -->
+          <polyline fill="none" stroke="var(--cool)" stroke-width="1.6" stroke-linejoin="round" points="40,111 111,143 182,155 253,121 324,107"/>
+          <g fill="var(--cool)"><circle cx="40"  cy="111" r="3"/><circle cx="111" cy="143" r="3"/><circle cx="182" cy="155" r="3"/><circle cx="253" cy="121" r="3"/><circle cx="324" cy="107" r="3"/></g>
+          <!-- Kruskal [50,37,27,45,52] -->
+          <polyline fill="none" stroke="var(--hot)" stroke-width="1.6" stroke-linejoin="round" points="40,111 111,136 182,155 253,121 324,107"/>
+          <g fill="var(--hot)"><circle cx="40" cy="111" r="3"/><circle cx="111" cy="136" r="3"/><circle cx="182" cy="155" r="3"/><circle cx="253" cy="121" r="3"/><circle cx="324" cy="107" r="3"/></g>
+          <!-- DFS [30,25,23,36,42] -->
+          <polyline fill="none" stroke="var(--sun)" stroke-width="1.6" stroke-linejoin="round" points="40,149 111,159 182,163 253,137 324,127"/>
+          <g fill="var(--sun)"><circle cx="40"  cy="149" r="3"/><circle cx="111" cy="159" r="3"/><circle cx="182" cy="163" r="3"/><circle cx="253" cy="137" r="3"/><circle cx="324" cy="127" r="3"/></g>
+          <!-- Drunkard [2,16,16,15,26] -->
+          <polyline fill="none" stroke="var(--cool-soft)" stroke-width="1.6" stroke-linejoin="round" points="40,202 111,176 182,176 253,178 324,157"/>
+          <g fill="var(--cool-soft)"><circle cx="40"  cy="202" r="3"/><circle cx="111" cy="176" r="3"/><circle cx="182" cy="176" r="3"/><circle cx="253" cy="178" r="3"/><circle cx="324" cy="157" r="3"/></g>
+
+          <text x="182" y="236" font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="middle">% swapped traces</text>
+          <text x="12" y="105"  font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" transform="rotate(-90 12 105)" text-anchor="middle">plan accuracy (%)</text>
+        </svg>
+        <p class="fig3-note">Add 25% swap: accuracy dips. Reach 75–100% swap: accuracy climbs back — and exceeds the normal baseline on Drunkard (OOD).</p>
+      </div>
+
+      <div class="fig3-card reveal">
+        <h4>(b) <strong>Trace validity</strong> vs % swapped traces</h4>
+        <svg viewBox="0 0 340 240" class="fig3-svg" aria-label="swap rate vs trace validity">
+          <rect x="40" y="16" width="284" height="190" fill="url(#fig3-grid)"/>
+          <line x1="40" y1="206" x2="324" y2="206" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="40" y1="16"  x2="40"  y2="206" stroke="currentColor" stroke-opacity=".5"/>
+          <g font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="end">
+            <text x="36" y="209">0</text>
+            <text x="36" y="162">25</text>
+            <text x="36" y="114">50</text>
+            <text x="36" y="67">75</text>
+            <text x="36" y="20">100</text>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="middle">
+            <text x="40"  y="222">0</text>
+            <text x="111" y="222">25</text>
+            <text x="182" y="222">50</text>
+            <text x="253" y="222">75</text>
+            <text x="324" y="222">100</text>
+          </g>
+          <!-- Wilson [97,67,57,3,0] -->
+          <polyline fill="none" stroke="var(--cool)" stroke-width="1.6" stroke-linejoin="round" points="40,22 111,79 182,98 253,200 324,206"/>
+          <g fill="var(--cool)"><circle cx="40"  cy="22" r="3"/><circle cx="111" cy="79" r="3"/><circle cx="182" cy="98" r="3"/><circle cx="253" cy="200" r="3"/><circle cx="324" cy="206" r="3"/></g>
+          <!-- Kruskal [96,67,55,5,0] -->
+          <polyline fill="none" stroke="var(--hot)" stroke-width="1.6" stroke-linejoin="round" points="40,24 111,79 182,102 253,196 324,206"/>
+          <g fill="var(--hot)"><circle cx="40" cy="24" r="3"/><circle cx="111" cy="79" r="3"/><circle cx="182" cy="102" r="3"/><circle cx="253" cy="196" r="3"/><circle cx="324" cy="206" r="3"/></g>
+          <!-- DFS [83,54,38,1,0] -->
+          <polyline fill="none" stroke="var(--sun)" stroke-width="1.6" stroke-linejoin="round" points="40,48 111,104 182,134 253,204 324,206"/>
+          <g fill="var(--sun)"><circle cx="40"  cy="48" r="3"/><circle cx="111" cy="104" r="3"/><circle cx="182" cy="134" r="3"/><circle cx="253" cy="204" r="3"/><circle cx="324" cy="206" r="3"/></g>
+          <!-- Drunkard [4,1,1,0,0] -->
+          <polyline fill="none" stroke="var(--cool-soft)" stroke-width="1.6" stroke-linejoin="round" points="40,199 111,204 182,204 253,206 324,206"/>
+          <g fill="var(--cool-soft)"><circle cx="40"  cy="199" r="3"/><circle cx="111" cy="204" r="3"/><circle cx="182" cy="204" r="3"/><circle cx="253" cy="206" r="3"/><circle cx="324" cy="206" r="3"/></g>
+
+          <text x="182" y="236" font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" text-anchor="middle">% swapped traces</text>
+          <text x="12" y="105"  font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55" transform="rotate(-90 12 105)" text-anchor="middle">trace validity (%)</text>
+        </svg>
+        <p class="fig3-note">Trace validity falls monotonically from ~97% (Normal) to 0% (fully Swapped). No U-shape here — accuracy and trace-meaning have decoupled.</p>
+      </div>
+    </div>
+
+    <div class="pull reveal">
+      What matters for transformers to improve accuracy with intermediate tokens is not their semantic correctness, but rather their consistency.
+    </div>
+
+    <!-- GRPO tables -->
+    <h3 class="reveal" style="font-family:var(--ff-serif);font-weight:700;font-size:1.4rem;margin-top:44px;margin-bottom:6px;">And RL makes it <em style="color:var(--hot)">worse</em> for the realist.</h3>
+    <p class="reveal" style="color:var(--ink-soft); font-size:.92rem; margin-bottom: 18px;">
+      GRPO post-training checkpoints for both model families. Each cell shows <em>plan accuracy / trace validity within valid plans</em>, in %.
+    </p>
+
+    <div class="tab-group">
+    <div class="tabs reveal">
+      <button class="tab active" data-tab="grpo-wilson">Wilson-trained</button>
+      <button class="tab" data-tab="grpo-sf">SF-style trained</button>
+    </div>
+
+    <div class="panel active reveal" id="tab-grpo-wilson">
+    <div class="table-scroll">
+      <div class="tbl-caption"><span>Table 4</span> Normal and Swapped <strong>Wilson</strong> models across maze distributions, by GRPO checkpoint.</div>
+      <table class="results grpo">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Model Type</th>
+            <th>Wilson</th>
+            <th>Kruskal</th>
+            <th>DFS</th>
+            <th>Drunkard</th>
+            <th>SF-style</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ckpt-start">
+            <td rowspan="2" class="ckpt">0</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">79.9</span><span class="tv">/ 97.1</span></td>
+            <td><span class="acc">83.1</span><span class="tv">/ 95.6</span></td>
+            <td><span class="acc">54.0</span><span class="tv">/ 87.4</span></td>
+            <td><span class="acc">0.2</span><span class="tv">/ 0.0</span></td>
+            <td><span class="acc">0.0</span><span class="tv">/ —</span></td>
+          </tr>
+          <tr>
+            <td class="mt">Swapped</td>
+            <td><span class="acc">83.3</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">85.0</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">52.6</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">11.7</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">0.2</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+          <tr class="ckpt-start">
+            <td rowspan="2" class="ckpt">70</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">88.9</span><span class="tv">/ 97.9</span></td>
+            <td><span class="acc">89.1</span><span class="tv">/ 98.1</span></td>
+            <td><span class="acc">62.3</span><span class="tv">/ 92.1</span></td>
+            <td><span class="acc">0.0</span><span class="tv">/ —</span></td>
+            <td><span class="acc">0.0</span><span class="tv">/ —</span></td>
+          </tr>
+          <tr>
+            <td class="mt">Swapped</td>
+            <td><span class="acc">93.4</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">93.5</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">67.1</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">14.4</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">0.4</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+          <tr class="ckpt-start highlight">
+            <td rowspan="2" class="ckpt">140</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">89.6</span><span class="tv">/ 98.2</span></td>
+            <td><span class="acc">91.7</span><span class="tv">/ 98.2</span></td>
+            <td><span class="acc">62.4</span><span class="tv">/ 92.9</span></td>
+            <td><span class="acc">0.0</span><span class="tv">/ —</span></td>
+            <td><span class="acc">0.0</span><span class="tv">/ —</span></td>
+          </tr>
+          <tr class="highlight">
+            <td class="mt">Swapped</td>
+            <td><span class="acc">99.5</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">99.3</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">81.9</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">14.4</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">0.4</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    </div><!-- /panel wilson -->
+
+    <div class="panel reveal" id="tab-grpo-sf">
+    <div class="table-scroll">
+      <div class="tbl-caption"><span>Table 5</span> Normal and Swapped <strong>Searchformer (SF-style)</strong> models across maze distributions, by GRPO checkpoint.</div>
+      <table class="results grpo">
+        <thead>
+          <tr>
+            <th>Checkpoint</th>
+            <th>Model Type</th>
+            <th>Wilson</th>
+            <th>Kruskal</th>
+            <th>DFS</th>
+            <th>Drunkard</th>
+            <th>SF-style</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ckpt-start">
+            <td rowspan="2" class="ckpt">0</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">40.8</span><span class="tv">/ 89.0</span></td>
+            <td><span class="acc">44.6</span><span class="tv">/ 93.0</span></td>
+            <td><span class="acc">19.9</span><span class="tv">/ 85.4</span></td>
+            <td><span class="acc">62.1</span><span class="tv">/ 85.2</span></td>
+            <td><span class="acc">56.2</span><span class="tv">/ 81.1</span></td>
+          </tr>
+          <tr>
+            <td class="mt">Swapped</td>
+            <td><span class="acc">45.8</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">51.0</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">29.0</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">95.4</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">89.1</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+          <tr class="ckpt-start">
+            <td rowspan="2" class="ckpt">70</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">54.2</span><span class="tv">/ 72.0</span></td>
+            <td><span class="acc">58.8</span><span class="tv">/ 67.7</span></td>
+            <td><span class="acc">20.7</span><span class="tv">/ 68.6</span></td>
+            <td><span class="acc">88.0</span><span class="tv">/ 66.9</span></td>
+            <td><span class="acc">82.4</span><span class="tv">/ 65.3</span></td>
+          </tr>
+          <tr>
+            <td class="mt">Swapped</td>
+            <td><span class="acc">62.3</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">67.5</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">39.4</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">99.6</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">96.9</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+          <tr class="ckpt-start highlight">
+            <td rowspan="2" class="ckpt">140</td>
+            <td class="mt">Normal</td>
+            <td><span class="acc">63.7</span><span class="tv">/ 52.1</span></td>
+            <td><span class="acc">68.8</span><span class="tv">/ 49.9</span></td>
+            <td><span class="acc">27.9</span><span class="tv">/ 50.5</span></td>
+            <td><span class="acc">91.2</span><span class="tv">/ 45.7</span></td>
+            <td><span class="acc">89.1</span><span class="tv">/ 43.4</span></td>
+          </tr>
+          <tr class="highlight">
+            <td class="mt">Swapped</td>
+            <td><span class="acc">69.0</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">75.5</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">41.6</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">99.2</span><span class="tv zero">/ 0.0</span></td>
+            <td><span class="acc">98.5</span><span class="tv zero">/ 0.0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </div><!-- /panel sf -->
+    </div><!-- /.tab-group -->
+
+    <p class="tbl-note">
+      → As GRPO pushes plan accuracy up (SF-style Normal: 56.2 → 89.1), trace validity falls (81.1 → 43.4). The swapped model meanwhile climbs to 98.5% with stable 0% trace validity — none of the solving is happening in the visible reasoning.
+    </p>
+  </section>
+
+  <!-- Length section -->
+  <section id="length">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 04 — Trace length</div>
+        <h2 class="sec-title">Longer traces are not <em>harder thinking</em>.</h2>
+      </div>
+    </div>
+
+    <p class="reveal" style="color:var(--ink-soft); max-width: 720px; font-size:.96rem;">
+      A popular reading of CoT length says models "think longer" on harder problems — "inference-time scaling." If that were true, model trace length would track A<sup>*</sup>'s ground-truth trace length. It doesn't.
+    </p>
+
+    <div class="scatter-wrap">
+      <div class="scatter reveal">
+        <h4>Wilson model · <strong>in-distribution (Wilson tests)</strong></h4>
+        <svg viewBox="0 0 300 220" aria-label="in-distribution scatter">
+          <defs>
+            <pattern id="grid-a" width="25" height="22" patternUnits="userSpaceOnUse">
+              <path d="M 25 0 L 0 0 0 22" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-width=".5"/>
+            </pattern>
+          </defs>
+          <rect x="30" y="10" width="260" height="190" fill="url(#grid-a)"/>
+          <line x1="30" y1="200" x2="290" y2="200" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="30" y1="10"  x2="30"  y2="200" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="30" y1="200" x2="290" y2="10" stroke="var(--hot)" stroke-opacity=".6" stroke-dasharray="4 4"/>
+          <g id="scatter-id"></g>
+          <text x="30" y="218" font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55">A* trace length →</text>
+          <text x="30" y="8"  font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55">generated length</text>
+        </svg>
+        <div class="stat">
+          <span>Pearson r = <strong>0.40</strong></span>
+          <span>Spearman ρ = <strong>0.98</strong></span>
+        </div>
+      </div>
+
+      <div class="scatter reveal">
+        <h4>Wilson model · <strong>out-of-distribution (SF-style)</strong></h4>
+        <svg viewBox="0 0 300 220" aria-label="out-of-distribution scatter">
+          <rect x="30" y="10" width="260" height="190" fill="url(#grid-a)"/>
+          <line x1="30" y1="200" x2="290" y2="200" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="30" y1="10"  x2="30"  y2="200" stroke="currentColor" stroke-opacity=".5"/>
+          <line x1="30" y1="200" x2="290" y2="10" stroke="var(--hot)" stroke-opacity=".6" stroke-dasharray="4 4"/>
+          <g id="scatter-ood"></g>
+          <text x="30" y="218" font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55">A* trace length →</text>
+          <text x="30" y="8"  font-family="IBM Plex Mono" font-size="8" fill="currentColor" fill-opacity=".55">generated length</text>
+        </svg>
+        <div class="stat">
+          <span>Pearson r = <strong>0.02</strong></span>
+          <span>Spearman ρ = <strong>0.02</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <p class="tbl-note">
+      → In-distribution, the model learned to imitate the length distribution of its training data, not the computation. One maze-generator further out, that illusion collapses.
+    </p>
+  </section>
+
+  <!-- Takeaways -->
+  <section id="takeaways">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 05 — Implications</div>
+        <h2 class="sec-title">What the <em>traces</em> are not.</h2>
+      </div>
+    </div>
+
+    <div class="takeaways">
+      <div class="tk reveal">
+        <div class="tk-n">I</div>
+        <div>
+          <div class="tk-t">"Chain of Thought" is not a chain of thought.</div>
+          <div class="tk-d">Intermediate tokens help the model — that much is real and reproducible. But in our fully controlled setting, they help without needing to be <strong>about</strong> the problem they accompany. Anthropomorphic readings (<em>"aha" moments</em>, deliberation, stepwise reasoning) require evidence beyond surface form.</div>
+        </div>
+      </div>
+
+      <div class="tk reveal">
+        <div class="tk-n">II</div>
+        <div>
+          <div class="tk-t">Consistency, not meaning, drives the gain.</div>
+          <div class="tk-d">A U-shaped curve in accuracy as we sweep swap-rate from 0% → 100% tells the story: well-structured but irrelevant traces work. Well-structured and correct traces also work. What does not work is inconsistent traces. The useful quantity is <strong>statistical regularity of the intermediate stream</strong>, not its semantic fidelity.</div>
+        </div>
+      </div>
+
+      <div class="tk reveal">
+        <div class="tk-n">III</div>
+        <div>
+          <div class="tk-t">Think of intermediate tokens as prompt augmentations.</div>
+          <div class="tk-d">A reframing: the model is learning a Skolem function P<sub>A</sub> = f<sub>θ</sub>(T, LLM) that augments the task prompt into a form the base distribution handles better. Prompt augmentations have no need to be human-interpretable — and our results suggest they usually aren't.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Citation -->
+  <section id="cite">
+    <div class="sec-mark reveal">
+      <div>
+        <div class="sec-kicker">§ 06 — Reference</div>
+        <h2 class="sec-title">Cite this <em>work</em>.</h2>
+      </div>
+    </div>
+
+    <div class="cite-wrap reveal">
+      <div class="cite-head">
+        <span class="cite-label">BIBTEX · TMLR 2025</span>
+        <button class="copy" id="copyBtn" onclick="copyBib()">Copy</button>
+      </div>
+<pre class="bib" id="bib">@article{valmeekam2025beyond,
+  <span class="k">title</span>   = {<span class="v">Beyond Semantics: The Unreasonable Effectiveness of
+             Reasonless Intermediate Tokens</span>},
+  <span class="k">author</span>  = {<span class="v">Valmeekam, Karthik and Palod, Vardhan and Stechly, Kaya
+             and Gundawar, Atharva and Kambhampati, Subbarao</span>},
+  <span class="k">journal</span> = {<span class="v">Transactions on Machine Learning Research (TMLR)</span>},
+  <span class="k">year</span>    = {<span class="v">2025</span>},
+  <span class="k">url</span>     = {<span class="v">https://arxiv.org/abs/2505.13775</span>}
+}</pre>
+    </div>
+
+    <div style="margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap;" class="reveal">
+      <a class="btn btn-accent" href="https://arxiv.org/abs/2505.13775" target="_blank" rel="noopener">Read on arXiv</a>
+      <a class="btn" href="https://arxiv.org/pdf/2505.13775" target="_blank" rel="noopener">Download PDF</a>
+      <a class="btn" href="#" target="_blank" rel="noopener" id="codeBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.43 9.8 8.2 11.39.6.1.82-.26.82-.57v-2.23c-3.02.55-3.8-.74-4.04-1.41-.13-.35-.72-1.41-1.23-1.7-.42-.22-1.02-.78-.01-.79.94-.02 1.62.87 1.84 1.23 1.08 1.82 2.8 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.46-1.33-5.46-5.93 0-1.3.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.31 3.3 1.23.96-.27 1.98-.4 3-.41s2.04.14 3 .41c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.76.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.3 0 .32.21.69.82.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View Code
+      </a>
+      <a class="btn" href="../../" >← All Yochan projects</a>
+    </div>
+
+    <p style="margin-top: 28px; color: var(--ink-faint); font-size:.82rem; line-height:1.7;">
+      Companion work on pre-trained LLMs fine-tuned for QA:
+      <a href="https://sbhambr1.github.io/trace-check-qa-paper/" target="_blank">Bhambri, Biswas, Kambhampati — ACL 2026</a>.
+      Builds on <em>Searchformer</em> (Lehnert et al. 2024) and <em>Stream of Search</em> (Gandhi et al. 2024).
+    </p>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>Yochan Lab · School of Computing &amp; AI · Arizona State University</span>
+    <span>TMLR 2025 · set in Fraunces &amp; IBM Plex</span>
+  </div>
+</footer>
+
+<script>
+/* ─── Theme toggle ─── */
+const root = document.documentElement;
+const saved = localStorage.getItem('bs-theme');
+if (saved) root.setAttribute('data-theme', saved);
+else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+  root.setAttribute('data-theme', 'dark');
+
+function toggleTheme(){
+  const cur = root.getAttribute('data-theme') || 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  if (next === 'dark') root.setAttribute('data-theme','dark');
+  else root.removeAttribute('data-theme');
+  localStorage.setItem('bs-theme', next);
+}
+
+/* ─── Reveal on scroll ─── */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // animate bars inside
+      e.target.querySelectorAll('.fil[data-v]').forEach(b => {
+        const v = parseFloat(b.dataset.v);
+        requestAnimationFrame(() => { b.style.width = v + '%'; });
+      });
+    }
+  });
+}, { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ─── Tabs ─── */
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.tab;
+    const group = btn.closest('.tab-group') || document;
+    group.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    group.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = group.querySelector('#tab-' + id);
+    if (!panel) return;
+    panel.classList.add('active');
+    panel.classList.add('visible');   // make sure reveal state is visible
+    // re-animate bars in the newly shown panel
+    panel.querySelectorAll('.fil[data-v]').forEach(b => {
+      b.style.width = '0%';
+      const v = parseFloat(b.dataset.v);
+      setTimeout(() => { b.style.width = v + '%'; }, 60);
+    });
+  });
+});
+
+/* ─── Maze rendering ─── */
+(function(){
+  // Simple pre-designed Wilson-style 15x15 layout
+  // Codes: 0 free, 1 wall, 2 explored, 3 path, 4 start, 5 goal
+  const wilson = [
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,4,3,3,2,0,1,0,2,2,0,0,0,0,1],
+    [1,1,1,3,1,0,1,0,1,1,1,1,1,0,1],
+    [1,0,0,3,2,0,1,0,0,2,2,0,1,0,1],
+    [1,0,1,3,1,1,1,1,1,1,3,0,1,0,1],
+    [1,0,1,3,3,3,3,3,3,3,3,0,1,0,1],
+    [1,0,1,1,1,1,1,1,1,1,1,0,1,0,1],
+    [1,0,0,0,2,2,0,1,0,0,0,0,1,0,1],
+    [1,1,1,0,1,1,0,1,1,1,1,1,1,0,1],
+    [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,1,0,1,1,1,1,1,0,1,1,1],
+    [1,0,0,0,1,0,0,0,0,0,1,0,0,5,1],
+    [1,1,1,0,1,1,1,1,1,0,1,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  ];
+  // Drunkard walk style — irregular
+  const drunk = [
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,4,0,0,0,1,1,1,0,0,0,0,1],
+    [1,1,0,1,0,1,0,0,0,1,0,1,1,0,1],
+    [1,0,0,1,0,1,1,1,0,0,0,0,1,0,1],
+    [1,0,1,1,0,0,0,1,1,1,1,0,0,0,1],
+    [1,0,0,0,0,1,0,0,0,1,0,0,1,0,1],
+    [1,1,1,0,1,1,1,1,0,1,0,1,1,0,1],
+    [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,1,1,1,1,1,0,1,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,0,1,1,0,1,1,1,0,1,1,1],
+    [1,0,0,0,0,1,0,0,0,0,1,0,0,5,1],
+    [1,0,1,1,0,1,0,1,1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  ];
+  function render(id, m){
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '';
+    for (let r = 0; r < m.length; r++){
+      for (let c = 0; c < m[r].length; c++){
+        const d = document.createElement('div');
+        d.className = 'mc';
+        const v = m[r][c];
+        if (v === 1) d.classList.add('w');
+        else if (v === 2) d.classList.add('o');
+        else if (v === 3) d.classList.add('p');
+        else if (v === 4) d.classList.add('s');
+        else if (v === 5) d.classList.add('g');
+        el.appendChild(d);
+      }
+    }
+  }
+  render('maze-wilson', wilson);
+  render('maze-drunk', drunk);
+})();
+
+/* ─── Scatter plots ─── */
+(function(){
+  function rand(seed){
+    let s = seed;
+    return () => {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+  }
+  const gId = document.getElementById('scatter-id');
+  const gOOD = document.getElementById('scatter-ood');
+  if (!gId || !gOOD) return;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function plot(g, n, fn, color){
+    for (let i = 0; i < n; i++){
+      const [x, y] = fn(i);
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('cx', 30 + x * 260);
+      c.setAttribute('cy', 200 - y * 190);
+      c.setAttribute('r', '2');
+      c.setAttribute('fill', color);
+      c.setAttribute('fill-opacity', '.55');
+      g.appendChild(c);
+    }
+  }
+  // In-distribution: tight cluster around the diagonal
+  const r1 = rand(7);
+  plot(gId, 140, () => {
+    const gx = r1();
+    // tight band around y=x
+    const noise = (r1() - .5) * 0.10;
+    return [gx * .95 + .025, Math.min(.98, Math.max(.02, gx + noise))];
+  }, 'var(--cool)');
+
+  // OOD: no correlation, broad scatter
+  const r2 = rand(42);
+  plot(gOOD, 160, () => {
+    const gx = r2();
+    const gy = r2();
+    return [gx * .9 + .05, gy * .9 + .05];
+  }, 'var(--hot)');
+})();
+
+/* ─── Copy BibTeX ─── */
+function copyBib(){
+  const raw = `@article{valmeekam2025beyond,
+  title   = {Beyond Semantics: The Unreasonable Effectiveness of Reasonless Intermediate Tokens},
+  author  = {Valmeekam, Karthik and Palod, Vardhan and Stechly, Kaya and Gundawar, Atharva and Kambhampati, Subbarao},
+  journal = {Transactions on Machine Learning Research (TMLR)},
+  year    = {2025},
+  url     = {https://arxiv.org/abs/2505.13775}
+}`;
+  navigator.clipboard.writeText(raw).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
